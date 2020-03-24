@@ -4,14 +4,17 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../state/reducer";
 import {UserState} from "../../../user/state/user.reducer";
 import {UserRole} from "../../../user/model/user.model";
+import { useHistory } from "react-router-dom";
 
 const NavbarContainer: React.FC = () => {
     const userState = useSelector<RootState, UserState>(state => state.user);
+    const history = useHistory();
 
     let routes: NavbarLink[] = [];
+    const navigateHome = () => history.push('/');
 
     if (userState.loading) {
-        return <Navbar links={[]} />;
+        return <Navbar onBrandClick={navigateHome} links={[]} />;
     }
 
     const isGuest = !userState.data;
@@ -35,7 +38,7 @@ const NavbarContainer: React.FC = () => {
         ]
     }
 
-    return <Navbar links={routes} />
+    return <Navbar onBrandClick={navigateHome} links={routes} />
 };
 
 export default NavbarContainer;

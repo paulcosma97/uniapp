@@ -19,13 +19,14 @@ export type NavbarLink = SimpleLink | DropdownLinks;
 
 export interface NavbarProps {
     links: NavbarLink[];
+    onBrandClick: () => void;
 }
 
 const isSimpleLink = (navbarLink: NavbarLink): navbarLink is SimpleLink => 'type' in navbarLink && navbarLink.type === 'link';
 
 const Navbar: React.FC<NavbarProps> = props => (
     <BNavbar collapseOnSelect expand="lg" bg="light" variant="light">
-        <BNavbar.Brand href="#home">Apptodate</BNavbar.Brand>
+        <BNavbar.Brand onClick={props.onBrandClick}>UniApp</BNavbar.Brand>
         <BNavbar.Toggle aria-controls="responsive-navbar-nav" />
         <BNavbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">

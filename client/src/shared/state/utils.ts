@@ -1,3 +1,6 @@
+import {TypedUseSelectorHook, useSelector} from "react-redux";
+import {RootState} from "./reducer";
+
 export interface Action<Type = string, Payload = void> {
     type: Type;
     payload: Payload;
@@ -12,3 +15,5 @@ export const makeAction =
         Type = ActionType<ExtendedAction>,
         Payload = ActionPayload<ExtendedAction>>
             (type: Type) => (payload: Payload): Action<Type, Payload> => ({ type, payload });
+
+export const useTypedSelector = useSelector as TypedUseSelectorHook<RootState>;
