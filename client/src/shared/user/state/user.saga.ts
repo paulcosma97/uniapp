@@ -1,16 +1,19 @@
-import { call, put, takeEvery, all } from 'redux-saga/effects'
+import {all, call, put, takeEvery} from 'redux-saga/effects'
 import {
-    LoadUserAction,
     loadUserFail,
     loadUserSuccess,
     LoginUserAction,
     loginUserFail,
-    loginUserSuccess, RegisterUserAction, registerUserFail, registerUserSuccess, UserActions
+    loginUserSuccess, logoutUserFail, logoutUserSuccess,
+    RegisterUserAction,
+    registerUserFail,
+    registerUserSuccess,
+    UserActions
 } from "./user.actions";
 import {userService} from "../service/user.service";
 import User from "../model/user.model";
 
-function* loadUserSaga(action: LoadUserAction) {
+function* loadUserSaga() {
     try {
         const user: User = yield call(userService.load);
         yield put(loadUserSuccess(user));
@@ -30,10 +33,19 @@ function* loginUserSaga(action: LoginUserAction) {
 
 function* registerUserSaga(action: RegisterUserAction) {
     try {
-        const user: User = yield call(userService.register, action.payload);
-        yield put(registerUserSuccess(user));
+        yield call(userService.register, action.payload);
+        yield put(registerUserSuccess());
     } catch (e) {
         yield put(registerUserFail());
+    }
+}
+
+function* logoutUserSaga() {
+    try {
+        yield call(userService.logout);
+        yield put(logoutUserSuccess());
+    } catch (e) {
+        yield put(logoutUserFail());
     }
 }
 
@@ -42,5 +54,6 @@ export default function* userSaga () {
         takeEvery(UserActions.REGISTER_USER, registerUserSaga),
         takeEvery(UserActions.LOAD_USER, loadUserSaga),
         takeEvery(UserActions.LOGIN_USER, loginUserSaga),
+        takeEvery(UserActions.LOGOUT_USER, logoutUserSaga),
     ])
 }

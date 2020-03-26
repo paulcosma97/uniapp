@@ -7,6 +7,7 @@ export interface SimpleLink {
     type: 'link';
     url: string;
     text: string;
+    onClick?: () => void;
 }
 
 export interface DropdownLinks {
@@ -31,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = props => (
         <BNavbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
                 {props.links.filter(isSimpleLink)
-                    .map((link: SimpleLink) => <Link key={link.url} className="nav-link" to={link.url}>{link.text}</Link>)}
+                    .map((link: SimpleLink) => <Link onClick={link.onClick} key={link.url} className="nav-link" to={link.url}>{link.text}</Link>)}
             </Nav>
         </BNavbar.Collapse>
     </BNavbar>

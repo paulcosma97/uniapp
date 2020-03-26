@@ -13,6 +13,10 @@ export enum UserActions {
     REGISTER_USER = '[User] Register',
     REGISTER_USER_SUCCESS = '[User] Register Success',
     REGISTER_USER_FAIL = '[User] Register Fail',
+
+    LOGOUT_USER = '[User] Logout',
+    LOGOUT_USER_SUCCESS = '[User] Logout Success',
+    LOGOUT_USER_FAIL = '[User] Logout Fail',
 }
 
 export type LoadUserAction = Action<UserActions.LOAD_USER>;
@@ -32,12 +36,20 @@ export const loginUserSuccess = makeAction<LoginUserActionSuccess>(UserActions.L
 export const loginUserFail = makeAction<LoginUserActionFail>(UserActions.LOGIN_USER_FAIL);
 
 export type RegisterUserAction = Action<UserActions.REGISTER_USER, ShortUser & UserCredentials>;
-export type RegisterUserActionSuccess = Action<UserActions.REGISTER_USER_SUCCESS, User>;
+export type RegisterUserActionSuccess = Action<UserActions.REGISTER_USER_SUCCESS>;
 export type RegisterUserActionFail = Action<UserActions.REGISTER_USER_FAIL>;
 
 export const registerUser = makeAction<RegisterUserAction>(UserActions.REGISTER_USER);
 export const registerUserSuccess = makeAction<RegisterUserActionSuccess>(UserActions.REGISTER_USER_SUCCESS);
 export const registerUserFail = makeAction<RegisterUserActionFail>(UserActions.REGISTER_USER_FAIL);
+
+export type LogoutUserAction = Action<UserActions.LOGOUT_USER>;
+export type LogoutUserActionSuccess = Action<UserActions.LOGOUT_USER_SUCCESS>;
+export type LogoutUserActionFail = Action<UserActions.LOGOUT_USER_FAIL>;
+
+export const logoutUser = makeAction<LogoutUserAction>(UserActions.LOGOUT_USER);
+export const logoutUserSuccess = makeAction<LogoutUserActionSuccess>(UserActions.LOGOUT_USER_SUCCESS);
+export const logoutUserFail = makeAction<LogoutUserActionFail>(UserActions.LOGOUT_USER_FAIL);
 
 
 export type UserActionsUnion = LoadUserAction
@@ -48,4 +60,7 @@ export type UserActionsUnion = LoadUserAction
     | LoginUserActionSuccess
     | RegisterUserAction
     | RegisterUserActionFail
-    | RegisterUserActionSuccess;
+    | RegisterUserActionSuccess
+    | LogoutUserAction
+    | LogoutUserActionFail
+    | LogoutUserActionSuccess;

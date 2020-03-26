@@ -8,7 +8,7 @@ import {useTypedSelector} from "../../../../shared/state/utils";
 import { Redirect } from "react-router-dom";
 
 const LoginContainer: React.FC = () => {
-    const { register, errors, handleSubmit } = useForm();
+    const { register, errors, handleSubmit } = useForm<UserCredentials>();
     const dispatch = useDispatch();
     const invalidCredentials = useTypedSelector(state => state.user.login.error);
     const isLoggedIn = useTypedSelector(state => !!state.user.data);
@@ -18,7 +18,7 @@ const LoginContainer: React.FC = () => {
     };
 
     if (isLoggedIn) {
-        return <Redirect to="/home" />
+        return <Redirect to="/profile" />
     }
 
     return <LoginForm
@@ -33,8 +33,8 @@ const LoginContainer: React.FC = () => {
                 minLength: { value: 5, message: 'Your password is too short.' }
             })
         }}
-        handleSubmit={handleSubmit(onSubmit as any)}
-        invalidCredentials={invalidCredentials}
+        handleSubmit={handleSubmit(onSubmit)}
+        submitFailed={invalidCredentials}
     />
 };
 
