@@ -17,7 +17,7 @@ export const databaseConfig: ConnectionOptions = {
         Student,
         User
     ],
+    logging: true,
     synchronize: true,
-    logging: false
 };
 

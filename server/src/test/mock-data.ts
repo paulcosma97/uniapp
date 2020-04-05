@@ -2,6 +2,7 @@ import {Student, Teacher, UserRole} from "../models/user.model";
 import {getConnection, getRepository} from "typeorm";
 import {Course} from "../models/course.model";
 import {CourseAttendance} from "../models/course-attendance.model";
+import {encryptPassword} from "../services/auth.service";
 
 const students: Student[] = [{
     firstName: "Paul",
@@ -48,6 +49,12 @@ const courses: Course[] = [
 ];
 
 export async function seed() {
+    await Promise.all(
+        [...students, ...teachers].map(async user => {
+            user.password = await encryptPassword(user.password);
+        })
+    );
+
     const savedStudents = await getRepository(Student).save(students);
     const savedTeachers = await getRepository(Teacher).save(teachers);
 

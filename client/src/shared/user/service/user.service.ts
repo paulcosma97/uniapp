@@ -1,5 +1,5 @@
 import User, {ShortUser, UserCredentials, UserRole} from "../model/user.model";
-import {MockService} from "../../mock/mock.service";
+import axios from 'axios';
 
 
 export interface UserService {
@@ -9,43 +9,30 @@ export interface UserService {
     logout(): Promise<void>;
 }
 
-interface CompleteUser extends User, UserCredentials {}
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export class MockUserService implements UserService {
-    private readonly mockService = new MockService<CompleteUser>('users');
 
      load = async (): Promise<User> => {
-         await delay(500);
-
-         const email = localStorage.getItem('loggedUser');
-        if (!email) {
-            throw new Error('Visitor is not authenticated.')
-        }
-
-        return this.mockService.find({ email });
+         // return fetch('http://localhost:4000/users/profile', {
+         //     method: 'get',
+         //     credentials: 'include'
+         // }).then(res => res.json()) as Promise<User>;
+         return axios.get<User>('/users/profile')
+             .then(res => res.data);
     };
 
     login = async (credentials: UserCredentials): Promise<User> => {
-        await delay(500);
-        const found = this.mockService.find(credentials);
-        localStorage.setItem('loggedUser', found.email);
-        return found;
+        return axios.post<User>('/users/login', credentials).then(res => res.data);
     };
 
     register = async (user: ShortUser & UserCredentials): Promise<void> => {
-        await delay(500);
-
-        this.mockService.save({
+        await axios.post<void>('/users', {
             ...user,
-            role: UserRole.STUDENT,
-            id: (undefined as any as number)
+            role: UserRole.STUDENT
         });
     };
 
     logout = async (): Promise<void> => {
-        await delay(500);
-        localStorage.removeItem('loggedUser');
+        await axios.post<void>('/users/logout');
     }
 }
 
