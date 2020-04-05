@@ -4,7 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node --inspect -r ts-node/register ./src/main.ts",
+    "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "npm start",
+    "ext": "ts"
   },
   "author": "",
   "license": "ISC",

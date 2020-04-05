@@ -1,7 +1,6 @@
 import {ChildEntity, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
-import {Subject} from "./subject.model";
-import {SubjectAttendance} from "./subject-attendance.model";
-import {SubjectGrade} from "./subject-grade.model";
+import {Course} from "./course.model";
+import {CourseAttendance} from "./course-attendance.model";
 
 export enum UserRole {
     STUDENT = 'student',
@@ -28,28 +27,22 @@ export abstract class User {
 
     @Column({ enum: UserRole, type: 'enum', nullable: false })
     role!: UserRole;
-
-    @Column({ nullable: false })
-    isAdmin!: boolean;
 }
 
 @ChildEntity(UserRole.STUDENT)
 export class Student extends User {
-    @ManyToMany(() => Subject, subject => subject.students)
-    enrolled?: Subject[];
+    @ManyToMany(() => Course, subject => subject.students)
+    enrolled?: Course[];
 
-    @OneToMany(() => SubjectAttendance, attendance => attendance.student)
-    attendance?: SubjectAttendance[];
-
-    @OneToMany(() => SubjectGrade, grade => grade.student)
-    grades?: SubjectGrade[];
+    @OneToMany(() => CourseAttendance, attendance => attendance.student)
+    attendance?: CourseAttendance[];
 }
 
 
 @ChildEntity(UserRole.TEACHER)
 export class Teacher extends User {
-    @ManyToMany(() => Subject, subject => subject.teachers)
-    teaches?: Subject[];
+    @ManyToMany(() => Course, subject => subject.teachers)
+    teaches?: Course[];
 }
 
 
