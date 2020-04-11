@@ -6,12 +6,19 @@ import {UserRole} from "../../shared/user/model/user.model";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {guestRoutes, studentRoutes, teacherRoutes} from "./routes";
 import NavbarContainer from "../../shared/components/navbar/container/NavbarContainer";
+import {Spin} from "antd";
+
+const LoadingSpinner: React.FC = () => (
+    <div style={{ position: 'absolute', right: '0', top: '48px', bottom: '0', left: '0', zIndex: 1, backgroundColor: '#FFFFFFD0', paddingTop: '50%' }}>
+        <Spin style={{ marginLeft: 'calc(50% - 24px)' }} tip="Se încarcă" size="large" />
+    </div>
+);
 
 export const Router: React.FC = () => {
     const state = useSelector<RootState, UserState>(state => state.user);
 
     if (state.loading) {
-        return <>Loading</>;
+        return <LoadingSpinner/>;
     }
 
     const isGuest = !state.data;
@@ -19,7 +26,7 @@ export const Router: React.FC = () => {
     const isTeacher = !isGuest && state.data?.role === UserRole.TEACHER;
 
     return (
-        <Suspense fallback={<div>Loading</div>}>
+        <Suspense fallback={<LoadingSpinner />}>
             <BrowserRouter>
                 <NavbarContainer />
                 <Switch>

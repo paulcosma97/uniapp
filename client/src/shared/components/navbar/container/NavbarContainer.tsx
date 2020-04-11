@@ -20,19 +20,19 @@ const NavbarContainer: React.FC = () => {
         const publicRoutes: NavbarLink[] = [];
         const guestRoutes: NavbarLink[] = [
             ...publicRoutes,
-            { text: 'Login', url: '/login', type: 'link' },
-            { text: 'Register', url: '/register', type: 'link' }
+            { text: 'Logare', url: '/login', type: 'link' },
+            { text: 'Înregistrare', url: '/register', type: 'link' }
         ];
         const authenticatedRoutes: NavbarLink[] = [
             ...publicRoutes,
-            { text: 'Logout', url: '/logout', type: 'link', onClick: () => dispatch(logoutUser()) }
+            { text: 'Delogare', url: '/logout', type: 'link', onClick: () => dispatch(logoutUser()) }
         ];
         const studentRoutes: NavbarLink[] = [
-            { text: 'My Grades', url: '/profile/grades', type: 'link' },
+            { text: 'Note', url: '/profile/grades', type: 'link' },
             ...authenticatedRoutes,
         ];
         const teacherRoutes: NavbarLink[] = [
-            { text: 'Administration', url: '/administration', type: 'link' },
+            { text: 'Administrare', url: '/administration', type: 'link' },
             ...authenticatedRoutes,
         ];
 
@@ -48,10 +48,17 @@ const NavbarContainer: React.FC = () => {
             setRoutes(teacherRoutes);
         }
 
-        setActiveLink([...teacherRoutes, ...teacherRoutes, ...guestRoutes]
-            .filter(isSimpleLink)
-            .find((route: SimpleLink) => history.location.pathname.includes(route.url)))
-    }, [userState, dispatch, history]);
+
+    }, [userState, dispatch]);
+
+    useEffect(() => {
+        setActiveLink(
+            routes
+                .filter(isSimpleLink)
+                .find((route: SimpleLink) => history.location.pathname.includes(route.url)
+            )
+        )
+    }, [history.location.pathname, routes]);
 
     return <Navbar activeLink={activeLink} onBrandClick={navigateHome} links={routes} />
 };
