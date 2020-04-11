@@ -1,5 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Core from "./core/Core";
 import {store} from "./shared/state/store";
 import {Provider} from "react-redux";

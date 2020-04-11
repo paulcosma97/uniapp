@@ -1,0 +1,6 @@
+.custom-antd-menu-override {
+    width: 100%;
+    position: fixed;
+    display: grid;
+    justify-items: center;
+}

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Navbar, {NavbarLink} from "../Navbar";
+import Navbar, {isSimpleLink, NavbarLink, SimpleLink} from "../Navbar";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../state/reducer";
 import {UserState} from "../../../user/state/user.reducer";
@@ -12,6 +12,7 @@ const NavbarContainer: React.FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [routes, setRoutes] = useState<NavbarLink[]>([]);
+    const [activeLink, setActiveLink] = useState<SimpleLink>();
 
     const navigateHome = () => history.push('/');
 
@@ -24,7 +25,7 @@ const NavbarContainer: React.FC = () => {
         ];
         const authenticatedRoutes: NavbarLink[] = [
             ...publicRoutes,
-            { text: 'Logout', url: '', type: 'link', onClick: () => dispatch(logoutUser()) }
+            { text: 'Logout', url: '/logout', type: 'link', onClick: () => dispatch(logoutUser()) }
         ];
         const studentRoutes: NavbarLink[] = [
             { text: 'My Grades', url: '/profile/grades', type: 'link' },
@@ -47,9 +48,12 @@ const NavbarContainer: React.FC = () => {
             setRoutes(teacherRoutes);
         }
 
-    }, [userState, dispatch]);
+        setActiveLink([...teacherRoutes, ...teacherRoutes, ...guestRoutes]
+            .filter(isSimpleLink)
+            .find((route: SimpleLink) => history.location.pathname.includes(route.url)))
+    }, [userState, dispatch, history]);
 
-    return <Navbar onBrandClick={navigateHome} links={routes} />
+    return <Navbar activeLink={activeLink} onBrandClick={navigateHome} links={routes} />
 };
 
 export default NavbarContainer;

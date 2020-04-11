@@ -13,9 +13,9 @@ export interface ShortUser {
     firstName: string;
     lastName: string;
     email: string;
+    role: UserRole;
 }
 
 export default interface User extends ShortUser {
     id: number;
-    role: UserRole;
 }
