@@ -11,10 +11,18 @@ courseRouter.get('/', restrict({ usersOnly: true }), async (req: Request, res: R
 
 
     if (isStudent(user)) {
-        res.json(await getRepository(Student).find({ relations: ['enrolled'], where: { id: user.id } })
-            .then(results => results.map(student => student.enrolled)))
+        res.json(
+            await getRepository(Student)
+                .find({ relations: ['enrolled'], where: { id: user.id } })
+                .then(results => results.map(student => student.enrolled))
+                .then(results => results.flat())
+        )
     } else {
-        res.json(await getRepository(Teacher).find({ relations: ['teaches'], where: { id: user.id } })
-            .then(results => results.map(teacher => teacher.teaches)))
+        res.json(
+            await getRepository(Teacher)
+                .find({ relations: ['teaches'], where: { id: user.id } })
+                .then(results => results.map(teacher => teacher.teaches))
+                .then(results => results.flat())
+        )
     }
 });

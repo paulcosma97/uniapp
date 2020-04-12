@@ -1,7 +1,6 @@
 import User, {ShortUser, UserCredentials} from "../model/user.model";
 import axios from 'axios';
 
-
 export class UserService {
     load = (): Promise<User> =>
         axios.get<User>('/users/profile').then(res => res.data);

@@ -1,5 +1,5 @@
 import React from "react";
-import {ShortUser, UserCredentials} from "../../../../shared/user/model/user.model";
+import {ShortUser, UserCredentials} from "../../../shared/user/model/user.model";
 import {Button, Col, Form, Input, Select} from "antd";
 
 export interface RegisterFormProps {

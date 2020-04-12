@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Checkbox, Col, Form, Input} from "antd";
-import {UserCredentials} from "../../../../shared/user/model/user.model";
+import {UserCredentials} from "../../../shared/user/model/user.model";
 
 export interface LoginFormProps {
     onSubmit: (credentials: UserCredentials) => any;

@@ -42,7 +42,7 @@ const courses: Course[] = [
         code: 'aaAAbbBBccCC'
     },
     {
-        title: 'Algoritmica si Structuri de Date Avansate',
+        title: 'Algoritmica si Structuri de Date',
         teachers: [],
         code: 'qqWWeeRRttYY'
     }

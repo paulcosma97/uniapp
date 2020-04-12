@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
-import {ShortUser, UserCredentials} from "../../../../shared/user/model/user.model";
+import {ShortUser, UserCredentials} from "../../../shared/user/model/user.model";
 import {useDispatch} from "react-redux";
-import {registerUser} from "../../../../shared/user/state/user.actions";
-import {useTypedSelector} from "../../../../shared/state/utils";
+import {registerUser} from "../../../shared/user/state/user.actions";
+import {useTypedSelector} from "../../../shared/state/utils";
 import {Redirect} from "react-router-dom";
 import RegisterForm from "../presentational/RegisterForm";
 import {message} from "antd";

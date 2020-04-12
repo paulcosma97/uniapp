@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
 import LoginForm from "../presentational/LoginForm";
-import {UserCredentials} from "../../../../shared/user/model/user.model";
+import {UserCredentials} from "../../../shared/user/model/user.model";
 import {useDispatch} from "react-redux";
-import {loginUser} from "../../../../shared/user/state/user.actions";
-import {useTypedSelector} from "../../../../shared/state/utils";
+import {loginUser} from "../../../shared/user/state/user.actions";
+import {useTypedSelector} from "../../../shared/state/utils";
 import { Redirect } from "react-router-dom";
 import {message} from "antd";
 

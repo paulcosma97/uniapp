@@ -8,21 +8,22 @@ export const publicRoutes: any[] = [
 
 export const guestRoutes: any[] = [
     ...publicRoutes,
-    <Route key="login" path="/login" component={React.lazy(() => import('../../modules/user/components/page/LoginPage'))} />,
-    <Route key="register" path="/register" component={React.lazy(() => import('../../modules/user/components/page/RegisterPage'))} />,
+    <Route key="login" path="/login" exact component={React.lazy(() => import('../../modules/user/page/LoginPage'))} />,
+    <Route key="register" path="/register" exact component={React.lazy(() => import('../../modules/user/page/RegisterPage'))} />,
 ];
 
 export const authenticatedRoutes: any[] = [
     ...publicRoutes,
-    <Route key="profile" path="/profile" component={() => <span>Profile Page</span>} />
+    <Route key="home" path="/courses" exact component={React.lazy(() => import('../../modules/course/page/CourseListPage'))} />,
+    <Route key="profile" path="/profile" exact component={() => <span>Profile Page</span>} />
 ];
 
 export const studentRoutes: any[] = [
     ...authenticatedRoutes,
-    <Route key="profile-grades" path="/profile/grades" component={() => <span>Grades Page</span>} />
+    <Route key="profile-grades" path="/profile/grades" exact component={() => <span>Grades Page</span>} />
 ];
 
 export const teacherRoutes: any[] = [
     ...authenticatedRoutes,
-    <Route key="administration" path="/administration" component={() => <span>Administration Page</span>} />
+    <Route key="administration" path="/administration" exact component={() => <span>Administration Page</span>} />
 ];
