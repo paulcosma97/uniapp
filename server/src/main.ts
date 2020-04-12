@@ -7,6 +7,7 @@ import {createConnection} from 'typeorm';
 import {databaseConfig} from "./configs/database.config";
 import {seed} from "./test/mock-data";
 import {userRouter} from "./routes/user.route";
+import {courseRouter} from "./routes/course.route";
 
 
 const app = express();
@@ -25,6 +26,7 @@ app.all('*', (req, _, next) => {
 });
 
 app.use('/users', userRouter);
+app.use('/courses', courseRouter);
 
 (async () => {
     const connection = await createConnection(databaseConfig);

@@ -4,6 +4,9 @@ import {CredentialsDto} from "../dto/credentials.dto";
 import {sendBadRequest} from "../services/utils.service";
 import {Student, Teacher, User, UserRole} from "../models/user.model";
 import {getRepository} from "typeorm";
+import UserInputDto from "../dto/user-input.dto";
+import {validateUserInput} from "../services/user.service";
+import {handleError} from "../errors/generic-error";
 
 export const userRouter = Router();
 
@@ -45,40 +48,12 @@ userRouter.post('/logout', restrict({ usersOnly: true }), async (req: Request, r
 });
 
 userRouter.post('/', restrict({ guestsOnly: true }), async (req: Request, res: Response) => {
-    const body: {
-        firstName?: string;
-        lastName?: string;
-        email?: string;
-        role?: UserRole;
-        password?: string;
-    } = req.body;
+    const body: UserInputDto = req.body;
 
-    if (!body.email || !body.lastName || !body.firstName || !body.role || !body.password) {
-        return sendBadRequest(res, 'Not all fields are filled.');
-    }
-
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(body.email)) {
-        return sendBadRequest(res, 'Invalid email format.')
-    }
-
-    if (body.firstName.length < 2) {
-        return sendBadRequest(res, 'First name is too short.')
-    }
-
-    if (body.lastName.length < 2) {
-        return sendBadRequest(res, 'Last name is too short.')
-    }
-
-    if (body.password.length < 6) {
-        return sendBadRequest(res, 'Password is too short.')
-    }
-
-    if (!Object.values(UserRole).includes(body.role)) {
-        return sendBadRequest(res, 'Invalid role.');
-    }
-
-    if (await getRepository(User).findOne({ email: body.email })) {
-        return sendBadRequest(res, 'Email already in use.');
+    try {
+        await validateUserInput(body);
+    } catch (e) {
+        return handleError(e, res);
     }
 
     const user: User = {
