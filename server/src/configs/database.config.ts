@@ -19,5 +19,8 @@ export const databaseConfig: ConnectionOptions = {
     ],
     logging: true,
     synchronize: true,
+    extra: {
+        charset: 'utf8'
+    }
 };
 

@@ -15,7 +15,7 @@ export const CourseList: React.FC<CourseListProps> = ({ courses, onCourseClick, 
         loading={false}
 
         renderItem={course => (
-            <List.Item onClick={() => onCourseClick(course)} actions={[<a onClick={event => {event.stopPropagation(); onCourseDelete(course)}} key="delete">șterge</a>]}>
+            <List.Item onClick={() => onCourseClick(course)} actions={[<a href="#" onClick={event => {event.stopPropagation(); onCourseDelete(course)}} key="delete">șterge</a>]}>
                 <Skeleton active loading={false}>
                     <List.Item.Meta
                         avatar={

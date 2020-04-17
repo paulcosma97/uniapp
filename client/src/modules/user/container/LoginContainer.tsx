@@ -23,7 +23,7 @@ const LoginContainer: React.FC = () => {
     }, [isError]);
 
     if (isLoggedIn) {
-        return <Redirect to="/profile" />
+        return <Redirect to="/" />
     }
 
     return <LoginForm

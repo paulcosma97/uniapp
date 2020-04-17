@@ -1,8 +1,9 @@
 import UserInputDto from "../dto/user-input.dto";
 import {sendBadRequest} from "./utils.service";
-import {Student, User, UserRole} from "../models/user.model";
+import {Student, Teacher, User, UserRole} from "../models/user.model";
 import {getRepository} from "typeorm";
 import GenericError from "../errors/generic-error";
+import {Course} from "../models/course.model";
 
 export async function validateUserInput(user: Partial<UserInputDto>): Promise<void> {
 
@@ -37,4 +38,18 @@ export async function validateUserInput(user: Partial<UserInputDto>): Promise<vo
 
 export function isStudent(user: User): user is Student {
     return user.role === UserRole.STUDENT;
+}
+
+export async function canReadCourse(user: User, courseId: number): Promise<boolean> {
+    if (isStudent(user)) {
+        const student = await getRepository(Student)
+            .findOne({ relations: ['enrolled'], where: { id: user.id } });
+
+        return student!.enrolled!.some(course => course.id === courseId);
+    } else {
+        const teacher = await getRepository(Teacher)
+            .findOne({ relations: ['teaches'], where: { id: user.id } });
+
+        return teacher!.teaches!.some(course => course.id === courseId);
+    }
 }

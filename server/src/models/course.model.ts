@@ -19,7 +19,7 @@ export class Course {
     teachers!: Teacher[];
 
     @OneToMany(() => CourseAttendance, attendance => attendance.course, { cascade: ['remove'] })
-    attendance?: CourseAttendance[];
+    attendances?: CourseAttendance[];
 
     @Column({ nullable: false, unique: true })
     code!: string;

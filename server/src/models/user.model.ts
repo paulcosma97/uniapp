@@ -1,4 +1,4 @@
-import {ChildEntity, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
+import {ChildEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
 import {Course} from "./course.model";
 import {CourseAttendance} from "./course-attendance.model";
 
@@ -34,8 +34,8 @@ export class Student extends User {
     @ManyToMany(() => Course, subject => subject.students)
     enrolled?: Course[];
 
-    @OneToMany(() => CourseAttendance, attendance => attendance.student)
-    attendance?: CourseAttendance[];
+    @ManyToMany(() => CourseAttendance, attendance => attendance.students)
+    attendances?: CourseAttendance[];
 }
 
 

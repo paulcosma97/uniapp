@@ -1,0 +1,27 @@
+.align-center {
+    text-align: center;
+    margin-top: 0.7em;
+}
+
+.teacher-header {
+    margin-top: 1em;
+}
+
+.teacher-header-item {
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+}
+
+.attend-button-wrapper {
+    margin-top: 2em;
+}
+
+.attend-button-wrapper button {
+    width: 100%;
+}
+
+.attend-button-wrapper button span:nth-child(2) {
+    position: relative;
+    bottom: 2px;
+}
