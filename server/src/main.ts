@@ -13,7 +13,7 @@ import {courseRouter} from "./routes/course.route";
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: (_, allow) => allow(null, true),
     credentials: true
 }));
 
@@ -25,8 +25,8 @@ app.all('*', (req, _, next) => {
    next();
 });
 
-app.use('/users', userRouter);
-app.use('/courses', courseRouter);
+app.use('/api/users', userRouter);
+app.use('/api/courses', courseRouter);
 
 (async () => {
     const connection = await createConnection(databaseConfig);

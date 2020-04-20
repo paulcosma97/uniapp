@@ -7,7 +7,6 @@ import axios from 'axios';
 import 'antd/dist/antd.css';
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:4000';
 
 ReactDOM.render(
   // <React.StrictMode>

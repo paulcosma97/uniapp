@@ -1,0 +1,8 @@
+.add-course {
+    position: absolute;
+    right: 1em;
+}
+
+.add-course-wrapper {
+    width: calc(100% - 10px);
+}

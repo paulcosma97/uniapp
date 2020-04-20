@@ -1,7 +1,7 @@
 import React from "react";
 import * as Course from "../../../shared/course/model/course.model";
 import './CourseDetails.css';
-import {Avatar, Button, Col, List, Progress, Row} from "antd";
+import {Avatar, Button, Col, List, message, Progress, Row} from "antd";
 import User from "../../../shared/user/model/user.model";
 import {CourseAttendance} from "../../../shared/course/model/course.model";
 import { SmileOutlined, FrownOutlined, MehOutlined } from '@ant-design/icons';
@@ -55,9 +55,9 @@ const AttendanceProgress: React.FC<{ attendances: CourseAttendance[] }> = ({ att
     )
 };
 
-const AttendButton: React.FC = () => (
+const AttendButton: React.FC<{ onAttend?: () => any }> = ({ onAttend }) => (
     <Row justify="center" className="attend-button-wrapper">
-        <Button type="primary" ghost icon={<DidAttendIcon style={{ fontSize: '1.3em' }} />} size="large">
+        <Button onClick={onAttend} type="primary" ghost icon={<DidAttendIcon style={{ fontSize: '1.3em' }} />} size="large">
             Sunt Prezent!
         </Button>
     </Row>
@@ -75,7 +75,7 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({ course, forStudent }) => 
 
         {forStudent && <AttendanceProgress attendances={course.attendances} />}
 
-        {forStudent && <AttendButton />}
+        {forStudent && <AttendButton onAttend={() => {}} />}
 
         <List
             itemLayout="horizontal"

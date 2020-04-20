@@ -10,7 +10,9 @@ export interface CourseState {
         data?: CourseDetails;
         loading: boolean;
         error: boolean;
-    }
+    };
+    addCourseError: boolean;
+    removeCourseError: boolean;
 }
 
 export const initialState: CourseState = {
@@ -21,7 +23,9 @@ export const initialState: CourseState = {
     course: {
         loading: true,
         error: false
-    }
+    },
+    addCourseError: false,
+    removeCourseError: false,
 };
 
 export default function reducer(state= initialState, action: CourseActionsUnion): CourseState {
@@ -73,6 +77,71 @@ export default function reducer(state= initialState, action: CourseActionsUnion)
                 course: {
                     loading: false,
                     error: true
+                }
+            };
+        case CourseActions.ENLIST_COURSE:
+        case CourseActions.CREATE_COURSE:
+            return {
+                ...state,
+                addCourseError: false,
+                courses: {
+                    ...state.courses,
+                    loading: true
+                }
+            };
+        case CourseActions.ENLIST_COURSE_SUCCESS:
+        case CourseActions.CREATE_COURSE_SUCCESS:
+            return {
+                ...state,
+                addCourseError: false,
+                courses: {
+                    ...state.courses,
+                    items: [
+                        ...state.courses.items,
+                        action.payload
+                    ],
+                    loading: false
+                }
+            };
+        case CourseActions.ENLIST_COURSE_FAIL:
+        case CourseActions.CREATE_COURSE_FAIL:
+            return {
+                ...state,
+                addCourseError: true,
+                courses: {
+                    ...state.courses,
+                    loading: false
+                }
+            };
+        case CourseActions.DELIST_COURSE:
+        case CourseActions.REMOVE_COURSE:
+            return {
+                ...state,
+                removeCourseError: false,
+                courses: {
+                    ...state.courses,
+                    loading: true
+                }
+            };
+        case CourseActions.DELIST_COURSE_SUCCESS:
+        case CourseActions.REMOVE_COURSE_SUCCESS:
+            return {
+                ...state,
+                removeCourseError: false,
+                courses: {
+                    ...state.courses,
+                    items: state.courses.items.filter(course => course.id !== action.payload),
+                    loading: false
+                }
+            };
+        case CourseActions.DELIST_COURSE_FAIL:
+        case CourseActions.REMOVE_COURSE_FAIL:
+            return {
+                ...state,
+                removeCourseError: true,
+                courses: {
+                    ...state.courses,
+                    loading: false
                 }
             };
         default:

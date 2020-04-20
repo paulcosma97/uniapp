@@ -8,6 +8,18 @@ export enum CourseActions {
     LOAD_COURSE = '[Course] Load',
     LOAD_COURSE_SUCCESS = '[Course] Load Success',
     LOAD_COURSE_FAIL = '[Course] Load Fail',
+    ENLIST_COURSE = '[Course] Enlist',
+    ENLIST_COURSE_SUCCESS = '[Course] Enlist Success',
+    ENLIST_COURSE_FAIL = '[Course] Enlist Fail',
+    CREATE_COURSE = '[Course] Create',
+    CREATE_COURSE_SUCCESS = '[Course] Create Success',
+    CREATE_COURSE_FAIL = '[Course] Create Fail',
+    DELIST_COURSE = '[Course] Delist',
+    DELIST_COURSE_SUCCESS = '[Course] Delist Success',
+    DELIST_COURSE_FAIL = '[Course] Delist Fail',
+    REMOVE_COURSE = '[Course] Remove',
+    REMOVE_COURSE_SUCCESS = '[Course] Remove Success',
+    REMOVE_COURSE_FAIL = '[Course] Remove Fail',
 }
 
 export type LoadAllCoursesAction = Action<CourseActions.LOAD_ALL_COURSES>;
@@ -26,10 +38,54 @@ export const loadCourse = makeAction<LoadCourseAction>(CourseActions.LOAD_COURSE
 export const loadCourseSuccess = makeAction<LoadCourseActionSuccess>(CourseActions.LOAD_COURSE_SUCCESS);
 export const loadCourseFail = makeAction<LoadCourseActionFail>(CourseActions.LOAD_COURSE_FAIL);
 
+export type EnlistCourseAction = Action<CourseActions.ENLIST_COURSE, string>;
+export type EnlistCourseActionSuccess = Action<CourseActions.ENLIST_COURSE_SUCCESS, Course>;
+export type EnlistCourseActionFail = Action<CourseActions.ENLIST_COURSE_FAIL>;
+
+export const enlistCourse = makeAction<EnlistCourseAction>(CourseActions.ENLIST_COURSE);
+export const enlistCourseSuccess = makeAction<EnlistCourseActionSuccess>(CourseActions.ENLIST_COURSE_SUCCESS);
+export const enlistCourseFail = makeAction<EnlistCourseActionFail>(CourseActions.ENLIST_COURSE_FAIL);
+
+export type DelistCourseAction = Action<CourseActions.DELIST_COURSE, { id: number; student: number }>;
+export type DelistCourseActionSuccess = Action<CourseActions.DELIST_COURSE_SUCCESS, number>;
+export type DelistCourseActionFail = Action<CourseActions.DELIST_COURSE_FAIL>;
+
+export const delistCourse = makeAction<DelistCourseAction>(CourseActions.DELIST_COURSE);
+export const delistCourseSuccess = makeAction<DelistCourseActionSuccess>(CourseActions.DELIST_COURSE_SUCCESS);
+export const delistCourseFail = makeAction<DelistCourseActionFail>(CourseActions.DELIST_COURSE_FAIL);
+
+export type CreateCourseAction = Action<CourseActions.CREATE_COURSE, string>;
+export type CreateCourseActionSuccess = Action<CourseActions.CREATE_COURSE_SUCCESS, Course>;
+export type CreateCourseActionFail = Action<CourseActions.CREATE_COURSE_FAIL>;
+
+export const createCourse = makeAction<CreateCourseAction>(CourseActions.CREATE_COURSE);
+export const createCourseSuccess = makeAction<CreateCourseActionSuccess>(CourseActions.CREATE_COURSE_SUCCESS);
+export const createCourseFail = makeAction<CreateCourseActionFail>(CourseActions.CREATE_COURSE_FAIL);
+
+export type RemoveCourseAction = Action<CourseActions.REMOVE_COURSE, number>;
+export type RemoveCourseActionSuccess = Action<CourseActions.REMOVE_COURSE_SUCCESS, number>;
+export type RemoveCourseActionFail = Action<CourseActions.REMOVE_COURSE_FAIL>;
+
+export const removeCourse = makeAction<RemoveCourseAction>(CourseActions.REMOVE_COURSE);
+export const removeCourseSuccess = makeAction<RemoveCourseActionSuccess>(CourseActions.REMOVE_COURSE_SUCCESS);
+export const removeCourseFail = makeAction<RemoveCourseActionFail>(CourseActions.REMOVE_COURSE_FAIL);
+
 export type CourseActionsUnion =
     | LoadAllCoursesAction
     | LoadAllCoursesActionFail
     | LoadAllCoursesActionSuccess
     | LoadCourseAction
     | LoadCourseActionSuccess
-    | LoadCourseActionFail;
+    | LoadCourseActionFail
+    | EnlistCourseAction
+    | EnlistCourseActionSuccess
+    | EnlistCourseActionFail
+    | DelistCourseAction
+    | DelistCourseActionSuccess
+    | DelistCourseActionFail
+    | CreateCourseAction
+    | CreateCourseActionSuccess
+    | CreateCourseActionFail
+    | RemoveCourseAction
+    | RemoveCourseActionSuccess
+    | RemoveCourseActionFail;
