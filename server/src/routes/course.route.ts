@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {restrict, sendForbidden} from "../services/auth.service";
 import {Student, Teacher, User} from "../models/user.model";
 import {canReadCourse, isStudent} from "../services/user.service";
-import {getRepository} from "typeorm";
+import {getRepository, In} from "typeorm";
 import {sendBadRequest, sendNotFound} from "../services/utils.service";
 import {Course} from "../models/course.model";
 import {CourseAttendance} from "../models/course-attendance.model";
@@ -38,7 +38,7 @@ courseRouter.get('/:id', restrict({ usersOnly: true }), async (req: Request, res
         return sendBadRequest(res, 'Course ID must be a string.');
     }
 
-    const course = await getRepository(Course).findOne(courseId, { relations: ['students', 'teachers', 'attendances'] });
+    const course = await getRepository(Course).findOne(courseId, { relations: ['students', 'teachers', 'attendances', 'attendances.students'] });
 
     if (!course) {
         return sendNotFound(res, 'Could not find a course for the given ID.')
@@ -51,6 +51,12 @@ courseRouter.get('/:id', restrict({ usersOnly: true }), async (req: Request, res
     [...course!.students, ...course.teachers].forEach(user => {
         delete user.password;
     });
+
+    course.attendances = course!.attendances!.map(attendance => ({
+        ...attendance,
+        total: course.students!.length,
+        attended: attendance.students!.length
+    }));
 
     if (isStudent(user)) {
         const student = await getRepository(Student).findOneOrFail(user.id, { relations: ['attendances'] });
@@ -154,5 +160,38 @@ courseRouter.delete('/:id/students/:student', restrict({ usersOnly: true }), asy
     await getRepository(Course).save(course);
     res.status(200);
     res.send();
+});
+
+courseRouter.put('/:id/teachers', restrict({ teachersOnly: true }), async (req: Request, res: Response) => {
+    const email = req.body.email;
+    const courseId = +req.params.id;
+
+    if (isNaN(courseId)) {
+        return sendBadRequest(res, 'Invalid course ID.')
+    }
+
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        return sendBadRequest(res, 'Invalid email.');
+    }
+
+    const course = await getRepository(Course).findOne(courseId, { relations: ['teachers'] });
+    if (!course) {
+        return sendNotFound(res);
+    }
+
+    const teacher = await getRepository(Teacher).findOne({ where: { email } });
+    if (!teacher) {
+        return sendNotFound(res);
+    }
+
+    if (course.teachers.some(other => other.email === email)) {
+        return sendBadRequest(res, 'This teacher already joined the course.')
+    }
+
+    course.teachers.push(teacher);
+    await getRepository(Course).save(course);
+
+    delete teacher.password;
+    res.json(teacher);
 });
 

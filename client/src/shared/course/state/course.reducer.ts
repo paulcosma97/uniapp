@@ -13,6 +13,7 @@ export interface CourseState {
     };
     addCourseError: boolean;
     removeCourseError: boolean;
+    addTeacherError: boolean;
 }
 
 export const initialState: CourseState = {
@@ -26,6 +27,7 @@ export const initialState: CourseState = {
     },
     addCourseError: false,
     removeCourseError: false,
+    addTeacherError: false
 };
 
 export default function reducer(state= initialState, action: CourseActionsUnion): CourseState {
@@ -144,7 +146,32 @@ export default function reducer(state= initialState, action: CourseActionsUnion)
                     loading: false
                 }
             };
+        case CourseActions.ADD_TEACHER:
+            return {
+                ...state,
+                addTeacherError: false
+            };
+        case CourseActions.ADD_TEACHER_FAIL:
+            return {
+                ...state,
+                addTeacherError: true
+            };
+        case CourseActions.ADD_TEACHER_SUCCESS:
+            return {
+                ...state,
+                addTeacherError: false,
+                course: {
+                    ...state.course,
+                    data: {
+                        ...state.course.data!,
+                        teachers: [
+                            ...state.course.data!.teachers,
+                            action.payload
+                        ]
+                    }
+                }
+            };
         default:
-            return { ...state };
+            return state;
     }
 }

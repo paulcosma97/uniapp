@@ -1,9 +1,10 @@
 import React from "react";
 import {ShortUser, UserCredentials} from "../../../shared/user/model/user.model";
 import {Button, Col, Form, Input, Select} from "antd";
+import {TriggerCallback} from "../../../shared/utils";
 
 export interface RegisterFormProps {
-    onSubmit: (value: ShortUser & UserCredentials) => any
+    onSubmit: TriggerCallback<ShortUser & UserCredentials>
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = props => (

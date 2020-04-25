@@ -1,5 +1,6 @@
 import {Action, makeAction} from "../../state/utils";
 import Course, {CourseDetails} from "../model/course.model";
+import User from "../../user/model/user.model";
 
 export enum CourseActions {
     LOAD_ALL_COURSES = '[Course] Load All',
@@ -20,6 +21,9 @@ export enum CourseActions {
     REMOVE_COURSE = '[Course] Remove',
     REMOVE_COURSE_SUCCESS = '[Course] Remove Success',
     REMOVE_COURSE_FAIL = '[Course] Remove Fail',
+    ADD_TEACHER = '[Course] Add Teacher',
+    ADD_TEACHER_SUCCESS = '[Course] Add Teacher Success',
+    ADD_TEACHER_FAIL = '[Course] Add Teacher Fail',
 }
 
 export type LoadAllCoursesAction = Action<CourseActions.LOAD_ALL_COURSES>;
@@ -70,6 +74,14 @@ export const removeCourse = makeAction<RemoveCourseAction>(CourseActions.REMOVE_
 export const removeCourseSuccess = makeAction<RemoveCourseActionSuccess>(CourseActions.REMOVE_COURSE_SUCCESS);
 export const removeCourseFail = makeAction<RemoveCourseActionFail>(CourseActions.REMOVE_COURSE_FAIL);
 
+export type AddTeacherAction = Action<CourseActions.ADD_TEACHER, { email: string; id: number }>;
+export type AddTeacherActionSuccess = Action<CourseActions.ADD_TEACHER_SUCCESS, User>;
+export type AddTeacherActionFail = Action<CourseActions.ADD_TEACHER_FAIL>;
+
+export const addTeacher = makeAction<AddTeacherAction>(CourseActions.ADD_TEACHER);
+export const addTeacherSuccess = makeAction<AddTeacherActionSuccess>(CourseActions.ADD_TEACHER_SUCCESS);
+export const addTeacherFail = makeAction<AddTeacherActionFail>(CourseActions.ADD_TEACHER_FAIL);
+
 export type CourseActionsUnion =
     | LoadAllCoursesAction
     | LoadAllCoursesActionFail
@@ -88,4 +100,7 @@ export type CourseActionsUnion =
     | CreateCourseActionFail
     | RemoveCourseAction
     | RemoveCourseActionSuccess
-    | RemoveCourseActionFail;
+    | RemoveCourseActionFail
+    | AddTeacherAction
+    | AddTeacherActionSuccess
+    | AddTeacherActionFail;

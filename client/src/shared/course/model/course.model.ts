@@ -12,6 +12,8 @@ export interface CourseAttendance {
     title: string;
     didAttend: boolean;
     available: boolean;
+    attended: number;
+    total: number;
 }
 
 export interface CourseDetails {

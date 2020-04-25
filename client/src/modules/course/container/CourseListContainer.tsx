@@ -16,8 +16,9 @@ import AddCourseModal from "../presentational/AddCourseModal";
 import {UserRole} from "../../../shared/user/model/user.model";
 import {message, Modal} from "antd";
 import {ExclamationCircleOutlined} from "@ant-design/icons/lib";
+import {TriggerCallback} from "../../../shared/utils";
 
-function showDangerConfirm(onConfirm: () => any) {
+function showDangerConfirm(onConfirm: TriggerCallback) {
     Modal.confirm({
         title: 'Ești sigur?',
         icon: <ExclamationCircleOutlined />,

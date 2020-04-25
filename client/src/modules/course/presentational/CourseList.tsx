@@ -3,12 +3,13 @@ import Course from "../../../shared/course/model/course.model";
 import {Avatar, List, Skeleton, Button} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import './CourseList.css';
+import {TriggerCallback} from "../../../shared/utils";
 
 export interface CourseListProps {
     courses: Course[];
-    onCourseClick: (course: Course) => any;
-    onCourseDelete: (course: Course) => any;
-    onAddCourse: () => any;
+    onCourseClick: TriggerCallback<Course>;
+    onCourseDelete: TriggerCallback<Course>;
+    onAddCourse: TriggerCallback;
 }
 
 export const CourseList: React.FC<CourseListProps> = ({ courses, onCourseClick, onCourseDelete, onAddCourse }) => (

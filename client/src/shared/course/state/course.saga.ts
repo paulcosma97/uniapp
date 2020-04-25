@@ -2,6 +2,7 @@ import Course, {CourseDetails} from "../model/course.model";
 import {all, call, put, takeEvery} from "redux-saga/effects";
 import {courseService} from "../service/course.service";
 import {
+    AddTeacherAction, addTeacherFail, addTeacherSuccess,
     CourseActions, CreateCourseAction,
     createCourseFail,
     createCourseSuccess,
@@ -71,6 +72,15 @@ function* removeCourse(action: RemoveCourseAction) {
     }
 }
 
+function* addTeacher(action: AddTeacherAction) {
+    try {
+        const teacher = yield call(courseService.addTeacher, action.payload.id, action.payload.email);
+        yield put(addTeacherSuccess(teacher));
+    } catch (e) {
+        yield put(addTeacherFail());
+    }
+}
+
 export default function* courseSaga () {
     yield all([
         takeEvery(CourseActions.LOAD_ALL_COURSES, loadAllCourses),
@@ -79,5 +89,6 @@ export default function* courseSaga () {
         takeEvery(CourseActions.DELIST_COURSE, delistCourse),
         takeEvery(CourseActions.CREATE_COURSE, createCourse),
         takeEvery(CourseActions.REMOVE_COURSE, removeCourse),
+        takeEvery(CourseActions.ADD_TEACHER, addTeacher),
     ])
 }

@@ -1,9 +1,10 @@
 import React from "react";
 import {Form, Input, Modal} from "antd";
+import {TriggerCallback} from "../../../shared/utils";
 
 export interface AddCourseModalProps {
-    onAdd: (course: string) => any;
-    onCancel: () => any;
+    onAdd: TriggerCallback<string>;
+    onCancel: TriggerCallback;
     visible: boolean;
     forStudent: boolean;
 }

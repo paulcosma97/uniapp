@@ -1,0 +1,1 @@
+export type TriggerCallback<Args = any, ReturnType = any> = (args: Args) => ReturnType;

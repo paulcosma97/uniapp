@@ -1,9 +1,10 @@
 import React from "react";
 import {Button, Checkbox, Col, Form, Input} from "antd";
 import {UserCredentials} from "../../../shared/user/model/user.model";
+import {TriggerCallback} from "../../../shared/utils";
 
 export interface LoginFormProps {
-    onSubmit: (credentials: UserCredentials) => any;
+    onSubmit: TriggerCallback<UserCredentials>;
 }
 
 const LoginForm: React.FC<LoginFormProps> = props => (
