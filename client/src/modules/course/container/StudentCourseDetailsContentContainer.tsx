@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Button, List, Row} from "antd";
 import {CourseDetails} from "../../../shared/course/model/course.model";
-import AttendanceProgress from "./AttendanceProgress";
-import AttendanceIcon from "./AttendanceIcon";
-import {TriggerCallback} from "../../../shared/utils";
-import StudentCourseDetailsContent from "./StudentCourseDetailsContent";
+import StudentCourseDetailsContent from "../presentational/StudentCourseDetailsContent";
 
 export interface StudentCourseDetailsContentContainerProps {
     course: CourseDetails;

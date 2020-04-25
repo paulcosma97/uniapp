@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, List, Row} from "antd";
-import {CourseAttendance, CourseDetails} from "../../../shared/course/model/course.model";
+import {CourseAttendance} from "../../../shared/course/model/course.model";
 import AttendanceProgress from "./AttendanceProgress";
 import AttendanceIcon from "./AttendanceIcon";
 import {TriggerCallback} from "../../../shared/utils";

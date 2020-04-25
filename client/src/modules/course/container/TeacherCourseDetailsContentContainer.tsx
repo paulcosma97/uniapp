@@ -1,22 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Button, List, message, Row} from "antd";
+import {message} from "antd";
 import {CourseDetails} from "../../../shared/course/model/course.model";
-import AttendanceProgress from "./AttendanceProgress";
-import {TriggerCallback} from "../../../shared/utils";
-import TeacherCourseDetailsContent from "./TeacherCourseDetailsContent";
-import AddTeacherModal from "./AddTeacherModal";
+import TeacherCourseDetailsContent from "../presentational/TeacherCourseDetailsContent";
+import AddTeacherModal from "../presentational/AddTeacherModal";
 import {useDispatch} from "react-redux";
 import {addTeacher} from "../../../shared/course/state/course.actions";
 import {useTypedSelector} from "../../../shared/state/utils";
-
-const AddTeacher: React.FC<{ onClick?: TriggerCallback }> = ({ onClick }) => (
-    <Row justify="center" className="attend-button-wrapper">
-        <Button onClick={onClick} type="primary" ghost>
-            Adaugă Profesor
-        </Button>
-    </Row>
-);
-
 
 export interface TeacherCourseDetailsContentContainerProps {
     course: CourseDetails;
@@ -45,7 +34,7 @@ const TeacherCourseDetailsContentContainer: React.FC<TeacherCourseDetailsContent
             message.error('Nu s-a găsit un profesor cu acest email.');
         }
 
-    }, [addTeacherError, message]);
+    }, [addTeacherError]);
 
     const onOpenAddTeacherModal = () => {
         setModalVisible(true);

@@ -3,8 +3,8 @@ import * as Course from "../../../shared/course/model/course.model";
 import './CourseDetails.css';
 import {Avatar, Col, Row} from "antd";
 import User from "../../../shared/user/model/user.model";
-import StudentCourseDetailsContentContainer from "./StudentCourseDetailsContentContainer";
-import TeacherCourseDetailsContentContainer from "./TeacherCourseDetailsContentContainer";
+import StudentCourseDetailsContentContainer from "../container/StudentCourseDetailsContentContainer";
+import TeacherCourseDetailsContentContainer from "../container/TeacherCourseDetailsContentContainer";
 
 export interface CourseDetailsProps {
     course: Course.CourseDetails;

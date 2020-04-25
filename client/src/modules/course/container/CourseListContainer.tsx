@@ -82,7 +82,7 @@ export const CourseListContainer: React.FC = () => {
                 message.error('Nu s-a putut creea cursul.')
             }
         }
-    }, [addCourseError]);
+    }, [addCourseError, user]);
 
     useEffect(() => {
         if (removeCourseError) {
