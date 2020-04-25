@@ -4,13 +4,13 @@ import {UserCredentials} from "../../../shared/user/model/user.model";
 import {TriggerCallback} from "../../../shared/utils";
 
 export interface LoginFormProps {
-    onSubmit: TriggerCallback<UserCredentials>;
+    onLogin: TriggerCallback<UserCredentials>;
 }
 
 const LoginForm: React.FC<LoginFormProps> = props => (
     <Form
         initialValues={{ remember: true }}
-        onFinish={props.onSubmit as any}
+        onFinish={props.onLogin as any}
     >
         <Form.Item
             label="Email"

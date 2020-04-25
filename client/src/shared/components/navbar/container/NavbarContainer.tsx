@@ -27,13 +27,12 @@ const NavbarContainer: React.FC = () => {
             ...publicRoutes,
             { text: 'Cursuri', url: '/courses', type: 'link' },
             { text: 'Profilul meu', url: '/profile', type: 'link' },
-            { text: 'Delogare', url: '/logout', type: 'link', onClick: () => dispatch(logoutUser()) },
+            { text: 'Delogare', url: '/', type: 'link', onClick: () => dispatch(logoutUser()) },
         ];
         const studentRoutes: NavbarLink[] = [
             ...authenticatedRoutes,
         ];
         const teacherRoutes: NavbarLink[] = [
-            { text: 'Administrare', url: '/administration', type: 'link' },
             ...authenticatedRoutes,
         ];
 

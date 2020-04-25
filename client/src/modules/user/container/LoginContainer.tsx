@@ -4,13 +4,14 @@ import {UserCredentials} from "../../../shared/user/model/user.model";
 import {useDispatch} from "react-redux";
 import {loginUser} from "../../../shared/user/state/user.actions";
 import {useTypedSelector} from "../../../shared/state/utils";
-import { Redirect } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {message} from "antd";
 
 const LoginContainer: React.FC = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useTypedSelector(state => !!state.user.data);
     const isError = useTypedSelector(state => state.user.login.error);
+    const history = useHistory();
 
     const onSubmit = (credentials: UserCredentials) => {
         dispatch(loginUser(credentials));
@@ -22,12 +23,14 @@ const LoginContainer: React.FC = () => {
         }
     }, [isError]);
 
-    if (isLoggedIn) {
-        return <Redirect to="/" />
-    }
+    useEffect(() => {
+        if (isLoggedIn) {
+            history.push('/courses');
+        }
+    }, [isLoggedIn]);
 
     return <LoginForm
-        onSubmit={onSubmit}
+        onLogin={onSubmit}
     />
 };
 
