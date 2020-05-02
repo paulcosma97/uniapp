@@ -2,11 +2,16 @@ import Course, {CourseDetails} from "../model/course.model";
 import {all, call, put, takeEvery} from "redux-saga/effects";
 import {courseService} from "../service/course.service";
 import {
-    AddTeacherAction, addTeacherFail, addTeacherSuccess,
-    CourseActions, CreateCourseAction,
+    AddTeacherAction,
+    addTeacherFail,
+    addTeacherSuccess,
+    CourseActions,
+    CreateCourseAction,
     createCourseFail,
     createCourseSuccess,
-    DelistCourseAction, delistCourseFail, delistCourseSuccess,
+    DelistCourseAction,
+    delistCourseFail,
+    delistCourseSuccess,
     EnlistCourseAction,
     enlistCourseFail,
     enlistCourseSuccess,
@@ -14,7 +19,13 @@ import {
     loadAllCoursesSuccess,
     LoadCourseAction,
     loadCourseFail,
-    loadCourseSuccess, RemoveCourseAction, removeCourseFail, removeCourseSuccess
+    loadCourse as dispatchLoadCourse,
+    loadCourseSuccess,
+    RemoveCourseAction,
+    removeCourseFail,
+    removeCourseSuccess,
+    ToggleCourseAttendanceAction, toggleCourseAttendanceFail,
+    toggleCourseAttendanceSuccess
 } from "./course.actions";
 
 
@@ -81,6 +92,26 @@ function* addTeacher(action: AddTeacherAction) {
     }
 }
 
+function* toggleCourseAttendance(action: ToggleCourseAttendanceAction) {
+    try {
+        yield call(courseService.toggleAttendance, action.payload.attendanceId);
+        if (action.payload.start) {
+            const zipBlob = yield call(courseService.downloadLocalServer, action.payload.attendanceId, window.location.origin);
+            const url = window.URL.createObjectURL(new Blob([zipBlob]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'local-server.zip');
+            document.body.appendChild(link);
+            link.click();
+        }
+        yield put(toggleCourseAttendanceSuccess());
+        yield put(dispatchLoadCourse(action.payload.courseId));
+
+    } catch (e) {
+        yield put(toggleCourseAttendanceFail());
+    }
+}
+
 export default function* courseSaga () {
     yield all([
         takeEvery(CourseActions.LOAD_ALL_COURSES, loadAllCourses),
@@ -90,5 +121,6 @@ export default function* courseSaga () {
         takeEvery(CourseActions.CREATE_COURSE, createCourse),
         takeEvery(CourseActions.REMOVE_COURSE, removeCourse),
         takeEvery(CourseActions.ADD_TEACHER, addTeacher),
+        takeEvery(CourseActions.TOGGLE_COURSE_ATTENDANCE, toggleCourseAttendance),
     ])
 }

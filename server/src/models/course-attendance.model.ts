@@ -22,4 +22,7 @@ export class CourseAttendance {
 
     @Column({ nullable: false })
     title!: string;
+
+    @Column({ nullable: true })
+    url?: string;
 }

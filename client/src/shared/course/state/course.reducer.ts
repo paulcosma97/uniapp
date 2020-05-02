@@ -14,6 +14,7 @@ export interface CourseState {
     addCourseError: boolean;
     removeCourseError: boolean;
     addTeacherError: boolean;
+    toggleCourseAttendanceError: boolean;
 }
 
 export const initialState: CourseState = {
@@ -27,7 +28,8 @@ export const initialState: CourseState = {
     },
     addCourseError: false,
     removeCourseError: false,
-    addTeacherError: false
+    addTeacherError: false,
+    toggleCourseAttendanceError: false
 };
 
 export default function reducer(state= initialState, action: CourseActionsUnion): CourseState {
@@ -170,6 +172,17 @@ export default function reducer(state= initialState, action: CourseActionsUnion)
                         ]
                     }
                 }
+            };
+        case CourseActions.TOGGLE_COURSE_ATTENDANCE:
+        case CourseActions.TOGGLE_COURSE_ATTENDANCE_SUCCESS:
+            return {
+                ...state,
+                toggleCourseAttendanceError: false
+            };
+        case CourseActions.TOGGLE_COURSE_ATTENDANCE_FAIL:
+            return {
+                ...state,
+                toggleCourseAttendanceError: true
             };
         default:
             return state;

@@ -8,7 +8,8 @@ const NetworkProperty = (text, value) => `
 export const SmartNetworkProperties = makeComponent(({ state, setState, onInit }) => {
     onInit(() => {
         subscribe('message-gateway', gateway => setState(oldState => ({ ...oldState, gateway })));
-        subscribe('message-ip', ip =>setState(oldState => ({ ...oldState, ip })));
+        subscribe('message-ip', ip => setState(oldState => ({ ...oldState, ip })));
+        subscribe('message-connected-devices', devices => setState(oldState => ({ ...oldState, connectedDevices: devices.length })));
     });
 
     return `
@@ -16,6 +17,8 @@ export const SmartNetworkProperties = makeComponent(({ state, setState, onInit }
             ${NetworkProperty('Default Gateway', state.gateway)}
             </br>
             ${NetworkProperty('Server IP', state.ip)}
+            </br>
+            ${NetworkProperty('Connected Devices', state.connectedDevices)}
         </div>
     `;
-}, { gateway: '-', ip: '-' });
+}, { gateway: '-', ip: '-', connectedDevices: 0 });

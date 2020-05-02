@@ -17,8 +17,10 @@
   },
   "dependencies": {
     "@types/node": "^12.12.37",
+    "axios": "^0.19.2",
     "electron": "^8.2.5",
     "express": "^4.17.1",
+    "local-devices": "^3.0.0",
     "network": "^0.5.0"
   }
 }

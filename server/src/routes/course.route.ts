@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {restrict, sendForbidden} from "../services/auth.service";
 import {Student, Teacher, User} from "../models/user.model";
 import {canReadCourse, isStudent} from "../services/user.service";
-import {getRepository, In} from "typeorm";
+import {getRepository} from "typeorm";
 import {sendBadRequest, sendNotFound} from "../services/utils.service";
 import {Course} from "../models/course.model";
 import {CourseAttendance} from "../models/course-attendance.model";

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {message} from "antd";
-import {CourseDetails} from "../../../shared/course/model/course.model";
+import {CourseAttendance, CourseDetails} from "../../../shared/course/model/course.model";
 import TeacherCourseDetailsContent from "../presentational/TeacherCourseDetailsContent";
 import AddTeacherModal from "../presentational/AddTeacherModal";
 import {useDispatch} from "react-redux";
-import {addTeacher} from "../../../shared/course/state/course.actions";
+import {addTeacher, toggleCourseAttendance} from "../../../shared/course/state/course.actions";
 import {useTypedSelector} from "../../../shared/state/utils";
 
 export interface TeacherCourseDetailsContentContainerProps {
@@ -40,8 +40,8 @@ const TeacherCourseDetailsContentContainer: React.FC<TeacherCourseDetailsContent
         setModalVisible(true);
     };
 
-    const onStartAttendance = (attendanceId: number) => {
-        console.log('start attendance', attendanceId);
+    const onStartAttendance = (attendance: CourseAttendance) => {
+        dispatch(toggleCourseAttendance({ courseId: course.id, attendanceId: attendance.id, start: !attendance.open }));
     };
 
     const onAddTeacher = (email: string) => {

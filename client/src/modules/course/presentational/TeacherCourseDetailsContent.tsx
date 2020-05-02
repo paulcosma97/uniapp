@@ -18,7 +18,7 @@ export interface TeacherCourseDetailsContentProps {
     attended: number;
     total: number;
     addTeacher: TriggerCallback;
-    startAttendance: TriggerCallback<number>;
+    startAttendance: TriggerCallback<CourseAttendance>;
     canAddTeacher: boolean
 }
 
@@ -36,7 +36,7 @@ const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = 
                 <List.Item>
                     <span>{attendance.title}</span>
                     {attendance.available ? (
-                        <Button onClick={() => props.startAttendance(attendance.id)}>Începe cursul</Button>
+                        <Button onClick={() => props.startAttendance(attendance)}>Începe cursul</Button>
                     ) : (
                         <span>{attendance.attended} / {attendance.total} ( {Math.round(attendance.attended / attendance.total * 100)}% )</span>
                     )}

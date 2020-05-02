@@ -8,6 +8,7 @@ import {databaseConfig} from "./configs/database.config";
 import {seed} from "./test/mock-data";
 import {userRouter} from "./routes/user.route";
 import {courseRouter} from "./routes/course.route";
+import {attendanceRouter} from "./routes/attendance.route";
 
 
 const app = express();
@@ -27,6 +28,7 @@ app.all('*', (req, _, next) => {
 
 app.use('/api/users', userRouter);
 app.use('/api/courses', courseRouter);
+app.use('/api/attendances', attendanceRouter);
 
 (async () => {
     const connection = await createConnection(databaseConfig);
