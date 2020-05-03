@@ -52,21 +52,21 @@ const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = 
               renderItem={attendance => (
                   <List.Item className="fixed-width-buttons">
                       <span>{attendance.title}</span>
-                      {attendanceCanBeStarted && attendanceCanBeStarted.id === attendance.id && !attendanceInProgress ? (
+                      <div>
+                          {attendanceCanBeStarted && attendanceCanBeStarted.id === attendance.id && !attendanceInProgress &&
                           <Button onClick={() => props.startAttendance(attendance)}>Începe cursul</Button>
-                      ) : (
-                          <div>
-                              {attendanceCanBeStarted && attendanceCanBeStarted.id > attendance.id && (
-                                  <span>{attendance.attended} / {attendance.total} ( {Math.round(attendance.attended / attendance.total * 100)}% )</span>
-                              )}
-                              {attendanceCanBeStarted && attendanceCanBeStarted.id < attendance.id && (
-                                  <Button type="danger" onClick={() => props.deleteAttendance(attendance)}>Șterge</Button>
-                              )}
-                              {attendanceInProgress && attendance.id === attendanceInProgress.id && (
-                                  <Button style={{ marginLeft: '7px' }} onClick={() => props.stopAttendance(attendance)}>Încheie cursul</Button>
-                              )}
-                          </div>
-                      )}
+                          }
+                          {attendanceCanBeStarted && attendanceCanBeStarted.id > attendance.id && (
+                              <span>{attendance.attended} / {attendance.total} ( {Math.round(attendance.attended / attendance.total * 100)}% )</span>
+                          )}
+                          {attendanceCanBeStarted && attendanceCanBeStarted.id <= attendance.id && (
+                              <Button style={{ marginLeft: '7px' }} type="danger" onClick={() => props.deleteAttendance(attendance)}>Șterge</Button>
+                          )}
+                          {attendanceInProgress && attendance.id === attendanceInProgress.id && (
+                              <Button style={{ marginLeft: '7px' }} onClick={() => props.stopAttendance(attendance)}>Încheie cursul</Button>
+                          )}
+                      </div>
+
                   </List.Item>
               )}
           />
