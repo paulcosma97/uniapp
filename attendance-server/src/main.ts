@@ -5,6 +5,7 @@ import {printLogo} from "./utils";
 import * as find from 'local-devices';
 import axios from 'axios'
 import {Express} from "express";
+import * as cors from 'cors';
 const configuration = require('../configuration.json');
 
 const getGatewayIP = () => new Promise<string>((resolve, reject) =>
@@ -102,6 +103,11 @@ async function setAttendanceUrl(url: string, port: number): Promise<void> {
 
     const expressApp = express();
 
+    expressApp.use(cors({
+        origin: (_, allow) => allow(null, true),
+        credentials: true
+    }));
+
     const profile = await fetchProfile(configuration.token);
     window.webContents.send('message-user', profile);
     const { gateway, ip } = await getIPs();
@@ -112,16 +118,21 @@ async function setAttendanceUrl(url: string, port: number): Promise<void> {
 
     expressApp.post('/api/attend', async (req, res) => {
        try {
+           console.log('here');
            const ip = req.ip.split(':').pop();
            const devices = await find();
+           console.log('here2', devices);
            const found = devices.find(device => ip.includes(device.ip));
 
            if (!found) {
               throw new Error('Device not found.');
           }
 
+           console.log('here3', devices);
            const student = await fetchProfile(req.headers['cookie'].split('=')[1]);
+           console.log('here4', devices);
            await attendCourse(student.id, found?.mac || 'bla');
+           console.log('here5', devices);
 
            res.statusCode = 200;
            res.send();

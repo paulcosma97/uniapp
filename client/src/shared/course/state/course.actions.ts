@@ -27,6 +27,9 @@ export enum CourseActions {
     TOGGLE_COURSE_ATTENDANCE = '[Course] Toggle Course Attendance',
     TOGGLE_COURSE_ATTENDANCE_SUCCESS = '[Course] Toggle Course Attendance Success',
     TOGGLE_COURSE_ATTENDANCE_FAIL = '[Course] Toggle Course Attendance Fail',
+    ATTEND_COURSE = '[Course] Attend Course',
+    ATTEND_COURSE_SUCCESS = '[Course] Attend Course Success',
+    ATTEND_COURSE_FAIL = '[Course] Attend Course Fail',
 }
 
 export type LoadAllCoursesAction = Action<CourseActions.LOAD_ALL_COURSES>;
@@ -93,6 +96,14 @@ export const toggleCourseAttendance = makeAction<ToggleCourseAttendanceAction>(C
 export const toggleCourseAttendanceSuccess = makeAction<ToggleCourseAttendanceActionSuccess>(CourseActions.TOGGLE_COURSE_ATTENDANCE_SUCCESS);
 export const toggleCourseAttendanceFail = makeAction<ToggleCourseAttendanceActionFail>(CourseActions.TOGGLE_COURSE_ATTENDANCE_FAIL);
 
+export type AttendCourseAction = Action<CourseActions.ATTEND_COURSE, { url: string; courseId: number }>;
+export type AttendCourseActionSuccess = Action<CourseActions.ATTEND_COURSE_SUCCESS>;
+export type AttendCourseActionFail = Action<CourseActions.ATTEND_COURSE_FAIL>;
+
+export const attendCourse = makeAction<AttendCourseAction>(CourseActions.ATTEND_COURSE);
+export const attendCourseSuccess = makeAction<AttendCourseActionSuccess>(CourseActions.ATTEND_COURSE_SUCCESS);
+export const attendCourseFail = makeAction<AttendCourseActionFail>(CourseActions.ATTEND_COURSE_FAIL);
+
 export type CourseActionsUnion =
     | LoadAllCoursesAction
     | LoadAllCoursesActionFail
@@ -117,4 +128,7 @@ export type CourseActionsUnion =
     | AddTeacherActionFail
     | ToggleCourseAttendanceAction
     | ToggleCourseAttendanceActionSuccess
-    | ToggleCourseAttendanceActionFail;
+    | ToggleCourseAttendanceActionFail
+    | AttendCourseAction
+    | AttendCourseActionSuccess
+    | AttendCourseActionFail;

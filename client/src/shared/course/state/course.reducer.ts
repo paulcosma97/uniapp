@@ -15,6 +15,7 @@ export interface CourseState {
     removeCourseError: boolean;
     addTeacherError: boolean;
     toggleCourseAttendanceError: boolean;
+    attendCourseError: boolean;
 }
 
 export const initialState: CourseState = {
@@ -29,7 +30,8 @@ export const initialState: CourseState = {
     addCourseError: false,
     removeCourseError: false,
     addTeacherError: false,
-    toggleCourseAttendanceError: false
+    toggleCourseAttendanceError: false,
+    attendCourseError: false,
 };
 
 export default function reducer(state= initialState, action: CourseActionsUnion): CourseState {
@@ -183,6 +185,17 @@ export default function reducer(state= initialState, action: CourseActionsUnion)
             return {
                 ...state,
                 toggleCourseAttendanceError: true
+            };
+        case CourseActions.ATTEND_COURSE:
+        case CourseActions.ATTEND_COURSE_SUCCESS:
+            return {
+                ...state,
+                attendCourseError: false
+            };
+        case CourseActions.ATTEND_COURSE_FAIL:
+            return {
+                ...state,
+                attendCourseError: true
             };
         default:
             return state;

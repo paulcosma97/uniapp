@@ -22,6 +22,8 @@ export class CourseService {
         axios.post<void>(`/api/attendances/${id}/toggle`).then(res => res.data);
     downloadLocalServer = (id: number, host: string): Promise<Blob> =>
         axios.post<Blob>(`/api/attendances/${id}/download-local-server`, { url: host }, { responseType: 'blob' }).then(res => res.data);
+    attendCourse = (baseUrl: string): Promise<void> =>
+        axios.post<void>(baseUrl + '/api/attend').then(res => res.data);
 }
 
 export const courseService = new CourseService();

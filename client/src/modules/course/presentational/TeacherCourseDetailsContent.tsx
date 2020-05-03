@@ -22,28 +22,37 @@ export interface TeacherCourseDetailsContentProps {
     canAddTeacher: boolean
 }
 
-const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = props => (
-    <>
-        <AddTeacher disabled={!props.canAddTeacher} onClick={props.addTeacher} />
+const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = props => {
+    const attendanceInProgress = props.attendances.find(att => att.open);
 
-        <h4 className="align-center">Prezențe</h4>
-        <AttendanceProgress total={props.total} current={props.attended} />
+    return (
+      <>
+          <AddTeacher disabled={!props.canAddTeacher} onClick={props.addTeacher} />
 
-        <List
-            itemLayout="horizontal"
-            dataSource={props.attendances}
-            renderItem={attendance => (
-                <List.Item>
-                    <span>{attendance.title}</span>
-                    {attendance.available ? (
-                        <Button onClick={() => props.startAttendance(attendance)}>Începe cursul</Button>
-                    ) : (
-                        <span>{attendance.attended} / {attendance.total} ( {Math.round(attendance.attended / attendance.total * 100)}% )</span>
-                    )}
-                </List.Item>
-            )}
-        />
-    </>
-);
+          <h4 className="align-center">Prezențe</h4>
+          <AttendanceProgress total={props.total} current={props.attended} />
+
+          <List
+              itemLayout="horizontal"
+              dataSource={props.attendances}
+              renderItem={attendance => (
+                  <List.Item>
+                      <span>{attendance.title}</span>
+                      {attendance.available && !attendanceInProgress ? (
+                          <Button onClick={() => props.startAttendance(attendance)}>Începe cursul</Button>
+                      ) : (
+                          <div>
+                              <span>{attendance.attended} / {attendance.total} ( {Math.round(attendance.attended / attendance.total * 100)}% )</span>
+                              {attendanceInProgress && attendance.id === attendanceInProgress.id && (
+                                  <Button style={{ marginLeft: '7px' }} onClick={() => props.startAttendance(attendance)}>Încheie cursul</Button>
+                              )}
+                          </div>
+                      )}
+                  </List.Item>
+              )}
+          />
+      </>
+    );
+};
 
 export default TeacherCourseDetailsContent;

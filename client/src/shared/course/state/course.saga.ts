@@ -25,7 +25,7 @@ import {
     removeCourseFail,
     removeCourseSuccess,
     ToggleCourseAttendanceAction, toggleCourseAttendanceFail,
-    toggleCourseAttendanceSuccess
+    toggleCourseAttendanceSuccess, AttendCourseAction, attendCourseFail, attendCourseSuccess
 } from "./course.actions";
 
 
@@ -112,6 +112,16 @@ function* toggleCourseAttendance(action: ToggleCourseAttendanceAction) {
     }
 }
 
+function* attendCourse(action: AttendCourseAction) {
+    try {
+        yield call(courseService.attendCourse, action.payload.url);
+        yield put(attendCourseSuccess());
+        yield put(dispatchLoadCourse(action.payload.courseId));
+    } catch (e) {
+        yield put(attendCourseFail());
+    }
+}
+
 export default function* courseSaga () {
     yield all([
         takeEvery(CourseActions.LOAD_ALL_COURSES, loadAllCourses),
@@ -122,5 +132,6 @@ export default function* courseSaga () {
         takeEvery(CourseActions.REMOVE_COURSE, removeCourse),
         takeEvery(CourseActions.ADD_TEACHER, addTeacher),
         takeEvery(CourseActions.TOGGLE_COURSE_ATTENDANCE, toggleCourseAttendance),
+        takeEvery(CourseActions.ATTEND_COURSE, attendCourse),
     ])
 }

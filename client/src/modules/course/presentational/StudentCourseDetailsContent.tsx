@@ -5,7 +5,7 @@ import AttendanceProgress from "./AttendanceProgress";
 import AttendanceIcon from "./AttendanceIcon";
 import {TriggerCallback} from "../../../shared/utils";
 
-const AttendButton: React.FC<{ onClick?: TriggerCallback, enabled: boolean }> = ({ onClick, enabled }) => (
+const AttendButton: React.FC<{ onClick: TriggerCallback, enabled: boolean }> = ({ onClick, enabled }) => (
     <Row justify="center" className="attend-button-wrapper">
         <Button onClick={onClick} type="primary" disabled={!enabled} ghost icon={<AttendanceIcon didAttend={true} />} size="large">
             Sunt Prezent!
@@ -18,15 +18,16 @@ export interface StudentCourseDetailsContentProps {
     attendances: CourseAttendance[];
     totalStudents: number;
     attendingStudents: number;
+    onAttendCourse: TriggerCallback;
 }
 
-const StudentCourseDetailsContent: React.FC<StudentCourseDetailsContentProps> = ({ attendances, totalStudents, attendingStudents }) =>(
+const StudentCourseDetailsContent: React.FC<StudentCourseDetailsContentProps> = ({ onAttendCourse, attendances, totalStudents, attendingStudents }) =>(
     <>
         <h4 className="align-center">Prezențe</h4>
 
         <AttendanceProgress total={totalStudents} current={attendingStudents} />
 
-        <AttendButton enabled={attendances.some(att => att.open)} onClick={() => {}} />
+        <AttendButton enabled={attendances.some(att => att.open && !att.didAttend)} onClick={onAttendCourse} />
         <List
             itemLayout="horizontal"
             dataSource={attendances}
