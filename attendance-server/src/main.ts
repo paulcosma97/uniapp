@@ -80,9 +80,9 @@ async function attendCourse(studentId: number, mac: string): Promise<void> {
     });
 }
 
-async function setAttendanceUrl(url: string): Promise<void> {
+async function setAttendanceUrl(url: string, port: number): Promise<void> {
     await axios.put(configuration.url + '/api/attendances/' + configuration.attendanceId + '/set-url', {
-        url
+        url: `http://${url}:${port}`
     }, {
         headers: {
             Cookie: 'uniapp_user=' + configuration.token
@@ -93,6 +93,8 @@ async function setAttendanceUrl(url: string): Promise<void> {
 (async () => {
     printLogo();
     console.log('DO NOT CLOSE THIS CONSOLE.\n\n');
+
+    const port = 8080;
 
     app.allowRendererProcessReuse = true;
     await new Promise(resolve => app.on('ready', resolve));
@@ -106,7 +108,7 @@ async function setAttendanceUrl(url: string): Promise<void> {
 
     window.webContents.send('message-gateway', gateway);
     window.webContents.send('message-ip', ip);
-    await setAttendanceUrl(ip);
+    await setAttendanceUrl(ip, port);
 
     expressApp.post('/api/attend', async (req, res) => {
        try {
@@ -132,7 +134,7 @@ async function setAttendanceUrl(url: string): Promise<void> {
        }
     });
 
-    startLocalServer(window, expressApp, 8080);
+    startLocalServer(window, expressApp, port);
     startPingingDevices(window);
 })().catch(e => {
     console.error('Something went wrong. Exiting in 5 second with a non-zero code.', e);

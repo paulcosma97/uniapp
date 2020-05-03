@@ -1,3 +1,5 @@
 .idea
 client/.idea
 /server/node_modules/
+/server/binaries/*
+attendance-server/configuration.json
