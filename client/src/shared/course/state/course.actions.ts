@@ -1,5 +1,5 @@
 import {Action, makeAction} from "../../state/utils";
-import Course, {CourseDetails} from "../model/course.model";
+import Course, {CourseAttendance, CourseDetails} from "../model/course.model";
 import User from "../../user/model/user.model";
 
 export enum CourseActions {
@@ -30,6 +30,12 @@ export enum CourseActions {
     ATTEND_COURSE = '[Course] Attend Course',
     ATTEND_COURSE_SUCCESS = '[Course] Attend Course Success',
     ATTEND_COURSE_FAIL = '[Course] Attend Course Fail',
+    CREATE_ATTENDANCE = '[Course] Create Attendance',
+    CREATE_ATTENDANCE_SUCCESS = '[Course] Create Attendance Success',
+    CREATE_ATTENDANCE_FAIL = '[Course] Create Attendance Fail',
+    DELETE_ATTENDANCE = '[Course] Delete Attendance',
+    DELETE_ATTENDANCE_SUCCESS = '[Course] Delete Attendance Success',
+    DELETE_ATTENDANCE_FAIL = '[Course] Delete Attendance Fail',
 }
 
 export type LoadAllCoursesAction = Action<CourseActions.LOAD_ALL_COURSES>;
@@ -104,6 +110,22 @@ export const attendCourse = makeAction<AttendCourseAction>(CourseActions.ATTEND_
 export const attendCourseSuccess = makeAction<AttendCourseActionSuccess>(CourseActions.ATTEND_COURSE_SUCCESS);
 export const attendCourseFail = makeAction<AttendCourseActionFail>(CourseActions.ATTEND_COURSE_FAIL);
 
+export type CreateAttendanceAction = Action<CourseActions.CREATE_ATTENDANCE, { courseId: number, title: string }>;
+export type CreateAttendanceActionSuccess = Action<CourseActions.CREATE_ATTENDANCE_SUCCESS, CourseAttendance>;
+export type CreateAttendanceActionFail = Action<CourseActions.CREATE_ATTENDANCE_FAIL>;
+
+export const createAttendance = makeAction<CreateAttendanceAction>(CourseActions.CREATE_ATTENDANCE);
+export const createAttendanceSuccess = makeAction<CreateAttendanceActionSuccess>(CourseActions.CREATE_ATTENDANCE_SUCCESS);
+export const createAttendanceFail = makeAction<CreateAttendanceActionFail>(CourseActions.CREATE_ATTENDANCE_FAIL);
+
+export type DeleteAttendanceAction = Action<CourseActions.DELETE_ATTENDANCE, number>;
+export type DeleteAttendanceActionSuccess = Action<CourseActions.DELETE_ATTENDANCE_SUCCESS, number>;
+export type DeleteAttendanceActionFail = Action<CourseActions.DELETE_ATTENDANCE_FAIL>;
+
+export const deleteAttendance = makeAction<DeleteAttendanceAction>(CourseActions.DELETE_ATTENDANCE);
+export const deleteAttendanceSuccess = makeAction<DeleteAttendanceActionSuccess>(CourseActions.DELETE_ATTENDANCE_SUCCESS);
+export const deleteAttendanceFail = makeAction<DeleteAttendanceActionFail>(CourseActions.DELETE_ATTENDANCE_FAIL);
+
 export type CourseActionsUnion =
     | LoadAllCoursesAction
     | LoadAllCoursesActionFail
@@ -131,4 +153,10 @@ export type CourseActionsUnion =
     | ToggleCourseAttendanceActionFail
     | AttendCourseAction
     | AttendCourseActionSuccess
-    | AttendCourseActionFail;
+    | AttendCourseActionFail
+    | CreateAttendanceAction
+    | CreateAttendanceActionSuccess
+    | CreateAttendanceActionFail
+    | DeleteAttendanceAction
+    | DeleteAttendanceActionSuccess
+    | DeleteAttendanceActionFail;

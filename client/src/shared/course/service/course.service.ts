@@ -1,4 +1,4 @@
-import Course, {CourseDetails} from "../model/course.model";
+import Course, {CourseAttendance, CourseDetails} from "../model/course.model";
 import axios from 'axios';
 import User from "../../user/model/user.model";
 
@@ -24,6 +24,10 @@ export class CourseService {
         axios.post<Blob>(`/api/attendances/${id}/download-local-server`, { url: host }, { responseType: 'blob' }).then(res => res.data);
     attendCourse = (baseUrl: string): Promise<void> =>
         axios.post<void>(baseUrl + '/api/attend').then(res => res.data);
+    createAttendance = (courseId: number, title: string): Promise<CourseAttendance> =>
+        axios.post<CourseAttendance>(`/api/courses/${courseId}/attendances`, { title }).then(res => res.data);
+    deleteAttendance = (id: number): Promise<void> =>
+        axios.delete<void>(`/api/attendances/${id}`).then(res => res.data);
 }
 
 export const courseService = new CourseService();

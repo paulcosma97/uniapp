@@ -10,9 +10,10 @@ export interface CourseListProps {
     onCourseClick: TriggerCallback<Course>;
     onCourseDelete: TriggerCallback<Course>;
     onAddCourse: TriggerCallback;
+    forStudent: boolean;
 }
 
-export const CourseList: React.FC<CourseListProps> = ({ courses, onCourseClick, onCourseDelete, onAddCourse }) => (
+export const CourseList: React.FC<CourseListProps> = ({ forStudent, courses, onCourseClick, onCourseDelete, onAddCourse }) => (
     <>
         <List
             itemLayout="horizontal"
@@ -26,7 +27,7 @@ export const CourseList: React.FC<CourseListProps> = ({ courses, onCourseClick, 
                         <a
                             href="#"
                             onClick={event => {event.stopPropagation(); onCourseDelete(course)}}
-                            key="delete">șterge</a>
+                            key="delete">{ forStudent ? 'ieși' : 'șterge' }</a>
                     ]}>
                     <Skeleton active loading={false}>
                         <List.Item.Meta

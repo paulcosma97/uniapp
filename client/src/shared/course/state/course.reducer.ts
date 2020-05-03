@@ -16,6 +16,8 @@ export interface CourseState {
     addTeacherError: boolean;
     toggleCourseAttendanceError: boolean;
     attendCourseError: boolean;
+    createAttendanceError: boolean;
+    deleteAttendanceError: boolean;
 }
 
 export const initialState: CourseState = {
@@ -32,6 +34,8 @@ export const initialState: CourseState = {
     addTeacherError: false,
     toggleCourseAttendanceError: false,
     attendCourseError: false,
+    createAttendanceError: false,
+    deleteAttendanceError: false,
 };
 
 export default function reducer(state= initialState, action: CourseActionsUnion): CourseState {
@@ -196,6 +200,52 @@ export default function reducer(state= initialState, action: CourseActionsUnion)
             return {
                 ...state,
                 attendCourseError: true
+            };
+        case CourseActions.CREATE_ATTENDANCE:
+            return {
+                ...state,
+                createAttendanceError: false
+            };
+        case CourseActions.CREATE_ATTENDANCE_SUCCESS:
+            return {
+                ...state,
+                createAttendanceError: false,
+                course: {
+                    ...state.course,
+                    data: {
+                        ...state.course.data!,
+                        attendances: [
+                            ...state.course.data!.attendances,
+                            {
+                                ...action.payload,
+                                attended: 0,
+                                total: state.course.data!.students.length
+                            }
+                        ]
+                    }
+                }
+            };
+        case CourseActions.CREATE_ATTENDANCE_FAIL:
+            return {
+                ...state,
+                createAttendanceError: true
+            };
+        case CourseActions.DELETE_ATTENDANCE:
+            return {
+                ...state,
+                deleteAttendanceError: false
+            };
+        case CourseActions.DELETE_ATTENDANCE_SUCCESS:
+            state.course.data!.attendances = state.course.data!.attendances.filter(attendance => attendance.id !== action.payload);
+
+            return {
+                ...state,
+                deleteAttendanceError: false
+            };
+        case CourseActions.DELETE_ATTENDANCE_FAIL:
+            return {
+                ...state,
+                deleteAttendanceError: true
             };
         default:
             return state;

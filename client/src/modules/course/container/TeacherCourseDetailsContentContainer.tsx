@@ -1,11 +1,32 @@
 import React, {useEffect, useState} from "react";
-import {message} from "antd";
+import {message, Modal} from "antd";
 import {CourseAttendance, CourseDetails} from "../../../shared/course/model/course.model";
 import TeacherCourseDetailsContent from "../presentational/TeacherCourseDetailsContent";
 import AddTeacherModal from "../presentational/AddTeacherModal";
 import {useDispatch} from "react-redux";
-import {addTeacher, toggleCourseAttendance} from "../../../shared/course/state/course.actions";
+import {
+    addTeacher,
+    createAttendance, deleteAttendance,
+    delistCourse, removeCourse,
+    toggleCourseAttendance
+} from "../../../shared/course/state/course.actions";
 import {useTypedSelector} from "../../../shared/state/utils";
+import AddAttendanceModal from "../presentational/AddAttendanceModal";
+import {UserRole} from "../../../shared/user/model/user.model";
+import {TriggerCallback} from "../../../shared/utils";
+import {ExclamationCircleOutlined} from "@ant-design/icons/lib";
+
+function showDangerConfirm(onConfirm: TriggerCallback, title: string) {
+    Modal.confirm({
+        title: `Ești sigur că vrei sa ștergi "${title}"?`,
+        icon: <ExclamationCircleOutlined />,
+        content: 'Aceasta acțiune nu este reversibilă.',
+        okText: 'Sunt sigur.',
+        okType: 'danger',
+        cancelText: 'Înapoi',
+        onOk: onConfirm
+    });
+}
 
 export interface TeacherCourseDetailsContentContainerProps {
     course: CourseDetails;
@@ -14,9 +35,10 @@ export interface TeacherCourseDetailsContentContainerProps {
 const TeacherCourseDetailsContentContainer: React.FC<TeacherCourseDetailsContentContainerProps> = ({ course }) => {
     const [total, setTotal] = useState(0);
     const [attended, setAttended] = useState(0);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [addTeacherModalVisible, setAddTeacherModalVisible] = useState(false);
+    const [addAttendanceModalVisible, setAddAttendanceModalVisible] = useState(false);
     const dispatch = useDispatch();
-    const addTeacherError = useTypedSelector(state => state.course.addTeacherError);
+    const { addTeacherError, toggleCourseAttendanceError, deleteAttendanceError, createAttendanceError } = useTypedSelector(state => state.course);
 
     useEffect(() => {
         const { attended: computedAttended, total: computedTotal } = course.attendances
@@ -36,8 +58,30 @@ const TeacherCourseDetailsContentContainer: React.FC<TeacherCourseDetailsContent
 
     }, [addTeacherError]);
 
+    useEffect(() => {
+        if (toggleCourseAttendanceError) {
+            message.error('Nu s-a putut porni / opri prezenta cursului.');
+        }
+
+    }, [toggleCourseAttendanceError]);
+
+    useEffect(() => {
+        if (deleteAttendanceError) {
+            message.error('Nu s-a putut șterge prezența.');
+        }
+
+    }, [deleteAttendanceError]);
+
+
+    useEffect(() => {
+        if (createAttendanceError) {
+            message.error('Nu s-a putut crea prezența.');
+        }
+
+    }, [createAttendanceError]);
+
     const onOpenAddTeacherModal = () => {
-        setModalVisible(true);
+        setAddTeacherModalVisible(true);
     };
 
     const onToggleAttendance = (attendance: CourseAttendance) => {
@@ -46,11 +90,30 @@ const TeacherCourseDetailsContentContainer: React.FC<TeacherCourseDetailsContent
 
     const onAddTeacher = (email: string) => {
         dispatch(addTeacher({ id: course.id, email }));
-        setModalVisible(false);
+        setAddTeacherModalVisible(false);
     };
 
-    const onCloseModal = () => {
-        setModalVisible(false);
+    const onCloseAddTeacherModal = () => {
+        setAddTeacherModalVisible(false);
+    };
+
+    const onOpenAddAttendanceModal = () => {
+      setAddAttendanceModalVisible(true);
+    };
+
+    const onAddAttendance = (title: string) => {
+        dispatch(createAttendance({ courseId: course.id, title }));
+        setAddAttendanceModalVisible(false);
+    };
+
+    const onCloseAddAttendanceModal = () => {
+        setAddAttendanceModalVisible(false);
+    };
+
+    const onDeleteAttendance = (attendance: CourseAttendance) => {
+        showDangerConfirm(() => {
+            dispatch(deleteAttendance(attendance.id));
+        }, attendance.title);
     };
 
     return <>
@@ -62,8 +125,11 @@ const TeacherCourseDetailsContentContainer: React.FC<TeacherCourseDetailsContent
             startAttendance={onToggleAttendance}
             canAddTeacher={course.teachers.length < 3}
             stopAttendance={onToggleAttendance}
+            createAttendance={onOpenAddAttendanceModal}
+            deleteAttendance={onDeleteAttendance}
         />
-        <AddTeacherModal onAdd={onAddTeacher} onCancel={onCloseModal} visible={modalVisible}/>
+        <AddTeacherModal onAdd={onAddTeacher} onCancel={onCloseAddTeacherModal} visible={addTeacherModalVisible}/>
+        <AddAttendanceModal onAdd={onAddAttendance} onCancel={onCloseAddAttendanceModal} visible={addAttendanceModalVisible}/>
     </>;
 };
 

@@ -2,42 +2,41 @@ import React, {useEffect} from "react";
 import {Form, Input, Modal} from "antd";
 import {TriggerCallback} from "../../../shared/utils";
 
-export interface AddCourseModalProps {
+export interface AddAttendanceModalProps {
     onAdd: TriggerCallback<string>;
     onCancel: TriggerCallback;
     visible: boolean;
-    forStudent: boolean;
 }
 
-const AddCourseModal: React.FC<AddCourseModalProps> = ({ onAdd, onCancel, visible, forStudent }) => {
+const AddAttendanceModal: React.FC<AddAttendanceModalProps> = ({ onAdd, onCancel, visible }) => {
     const formRef = React.createRef<any>();
 
-    const addCourse = () => {
+    const onOK = () => {
         formRef.current.submit();
     };
 
     useEffect(() => {
         if (!visible && formRef.current) {
-            formRef.current.resetFields(['course']);
+            formRef.current.resetFields(['title']);
         }
     }, [formRef, visible]);
 
     return (
         <Modal
-            title="Adaugă un curs..."
+            title="Adaugă o prezență..."
             visible={visible}
-            onOk={addCourse}
+            onOk={onOK}
             onCancel={onCancel}
             okText="Adaugă"
             cancelText="Anulează"
         >
-            <Form onFinish={form => onAdd(form.course)} ref={formRef}>
+            <Form onFinish={form => onAdd(form.title)} ref={formRef}>
                 <Form.Item
-                    label={forStudent ? 'Codul cursului:' : 'Titlul noului curs:'}
-                    name="course"
+                    label="Titlul prezenței:"
+                    name="title"
                     rules={[
-                        { required: true, message: (forStudent ? 'Codul' : 'Titlul') + ' cursului este necesar.' },
-                        { min: 4, message: (forStudent ? 'Codul' : 'Titlul') + ' cursului este prea scurt.' },
+                        { required: true, message: 'Titlul prezenței este necesar.' },
+                        { min: 4, message: 'Titlul prezenței este prea scurt.' },
                     ]}
                 >
                     <Input/>
@@ -47,4 +46,4 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({ onAdd, onCancel, visibl
     );
 };
 
-export default AddCourseModal;
+export default AddAttendanceModal;

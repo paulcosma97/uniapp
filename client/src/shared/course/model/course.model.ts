@@ -26,3 +26,7 @@ export interface CourseDetails {
     teachers: User[];
     attendances: CourseAttendance[];
 }
+
+export interface CourseAttendanceInput {
+    title: string;
+}

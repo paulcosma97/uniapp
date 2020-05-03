@@ -96,8 +96,8 @@ export const CourseListContainer: React.FC = () => {
 
     return (
         <>
-            <CourseList onAddCourse={onTriggerCourseModal} onCourseClick={onCourseClick} onCourseDelete={onCourseDelete} courses={courses} />
-            <AddCourseModal forStudent={true} onAdd={onAddCourse} onCancel={onDismissModal} visible={modalVisible}/>
+            <CourseList forStudent={user!.role === UserRole.STUDENT} onAddCourse={onTriggerCourseModal} onCourseClick={onCourseClick} onCourseDelete={onCourseDelete} courses={courses} />
+            <AddCourseModal forStudent={user!.role === UserRole.STUDENT} onAdd={onAddCourse} onCancel={onDismissModal} visible={modalVisible}/>
         </>
     )
 };

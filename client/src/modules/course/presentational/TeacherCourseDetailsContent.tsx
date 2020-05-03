@@ -3,11 +3,21 @@ import {Button, List, Row} from "antd";
 import {CourseAttendance} from "../../../shared/course/model/course.model";
 import AttendanceProgress from "./AttendanceProgress";
 import {TriggerCallback} from "../../../shared/utils";
+import './TeacherCourseDetailsContent.css'
 
-const AddTeacher: React.FC<{ onClick?: TriggerCallback, disabled: boolean }> = ({ onClick, disabled }) => (
+const AddTeacher: React.FC<{ onClick: TriggerCallback, disabled: boolean }> = ({ onClick, disabled }) => (
     <Row justify="center" className="attend-button-wrapper">
         <Button onClick={onClick} disabled={disabled} type="primary" ghost>
             Adaugă Profesor
+        </Button>
+    </Row>
+);
+
+
+const AddAttendance: React.FC<{ onClick: TriggerCallback }> = ({ onClick }) => (
+    <Row justify="center" className="attend-button-wrapper">
+        <Button onClick={onClick} type="primary" ghost>
+            Adaugă Prezență
         </Button>
     </Row>
 );
@@ -20,7 +30,9 @@ export interface TeacherCourseDetailsContentProps {
     addTeacher: TriggerCallback;
     startAttendance: TriggerCallback<CourseAttendance>;
     stopAttendance: TriggerCallback<CourseAttendance>;
-    canAddTeacher: boolean
+    canAddTeacher: boolean;
+    createAttendance: TriggerCallback;
+    deleteAttendance: TriggerCallback<CourseAttendance>;
 }
 
 const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = props => {
@@ -38,13 +50,18 @@ const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = 
               itemLayout="horizontal"
               dataSource={props.attendances}
               renderItem={attendance => (
-                  <List.Item>
+                  <List.Item className="fixed-width-buttons">
                       <span>{attendance.title}</span>
                       {attendanceCanBeStarted && attendanceCanBeStarted.id === attendance.id && !attendanceInProgress ? (
                           <Button onClick={() => props.startAttendance(attendance)}>Începe cursul</Button>
                       ) : (
                           <div>
-                              <span>{attendance.attended} / {attendance.total} ( {Math.round(attendance.attended / attendance.total * 100)}% )</span>
+                              {attendanceCanBeStarted && attendanceCanBeStarted.id > attendance.id && (
+                                  <span>{attendance.attended} / {attendance.total} ( {Math.round(attendance.attended / attendance.total * 100)}% )</span>
+                              )}
+                              {attendanceCanBeStarted && attendanceCanBeStarted.id < attendance.id && (
+                                  <Button type="danger" onClick={() => props.deleteAttendance(attendance)}>Șterge</Button>
+                              )}
                               {attendanceInProgress && attendance.id === attendanceInProgress.id && (
                                   <Button style={{ marginLeft: '7px' }} onClick={() => props.stopAttendance(attendance)}>Încheie cursul</Button>
                               )}
@@ -53,6 +70,8 @@ const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = 
                   </List.Item>
               )}
           />
+
+          <AddAttendance onClick={props.createAttendance} />
       </>
     );
 };

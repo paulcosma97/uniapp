@@ -3,4 +3,5 @@
     position: fixed;
     display: grid;
     justify-items: center;
+    z-index: 9999;
 }

@@ -24,8 +24,14 @@ import {
     RemoveCourseAction,
     removeCourseFail,
     removeCourseSuccess,
-    ToggleCourseAttendanceAction, toggleCourseAttendanceFail,
-    toggleCourseAttendanceSuccess, AttendCourseAction, attendCourseFail, attendCourseSuccess
+    ToggleCourseAttendanceAction,
+    toggleCourseAttendanceFail,
+    toggleCourseAttendanceSuccess,
+    AttendCourseAction,
+    attendCourseFail,
+    attendCourseSuccess,
+    CreateAttendanceAction,
+    createAttendanceSuccess, createAttendanceFail, DeleteAttendanceAction, deleteAttendanceSuccess, deleteAttendanceFail
 } from "./course.actions";
 
 
@@ -122,6 +128,24 @@ function* attendCourse(action: AttendCourseAction) {
     }
 }
 
+function* createAttendance(action: CreateAttendanceAction) {
+    try {
+        const attendance = yield call(courseService.createAttendance, action.payload.courseId, action.payload.title);
+        yield put(createAttendanceSuccess(attendance));
+    } catch (e) {
+        yield put(createAttendanceFail());
+    }
+}
+
+function* deleteAttendance(action: DeleteAttendanceAction) {
+    try {
+        yield call(courseService.deleteAttendance, action.payload);
+        yield put(deleteAttendanceSuccess(action.payload));
+    } catch (e) {
+        yield put(deleteAttendanceFail());
+    }
+}
+
 export default function* courseSaga () {
     yield all([
         takeEvery(CourseActions.LOAD_ALL_COURSES, loadAllCourses),
@@ -133,5 +157,7 @@ export default function* courseSaga () {
         takeEvery(CourseActions.ADD_TEACHER, addTeacher),
         takeEvery(CourseActions.TOGGLE_COURSE_ATTENDANCE, toggleCourseAttendance),
         takeEvery(CourseActions.ATTEND_COURSE, attendCourse),
+        takeEvery(CourseActions.CREATE_ATTENDANCE, createAttendance),
+        takeEvery(CourseActions.DELETE_ATTENDANCE, deleteAttendance),
     ])
 }

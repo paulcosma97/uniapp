@@ -6,6 +6,7 @@ import {getRepository} from "typeorm";
 import {sendBadRequest, sendNotFound} from "../services/utils.service";
 import {Course} from "../models/course.model";
 import {CourseAttendance} from "../models/course-attendance.model";
+import {AttendanceInputDto} from "../dto/attendance-input.dto";
 
 export const courseRouter = Router();
 
@@ -193,5 +194,38 @@ courseRouter.put('/:id/teachers', restrict({ teachersOnly: true }), async (req: 
 
     delete teacher.password;
     res.json(teacher);
+});
+
+courseRouter.post('/:id/attendances', restrict({ teachersOnly: true }), async (req: Request, res: Response) => {
+    const teacher: User = res.locals.user;
+    const courseId = +req.params.id;
+    const attendanceBody: AttendanceInputDto = req.body;
+
+    const course = await getRepository(Course).findOne(courseId, { relations: ['teachers', 'attendances'] });
+    if (!course) {
+        return sendNotFound(res, 'Could not find a course.');
+    }
+
+    if (!course.teachers.find(other => other.id === teacher.id)) {
+        return sendForbidden(res);
+    }
+
+    if (typeof attendanceBody.title !== 'string') {
+        return sendBadRequest(res, 'Title must be a valid string.')
+    }
+
+    if (attendanceBody.title.length < 4) {
+        return sendBadRequest(res, 'Title must be at least 4 characters.');
+    }
+
+    let attendance: CourseAttendance = {
+        title: attendanceBody.title,
+        available: true,
+        open: false,
+        course,
+    };
+
+    attendance = await getRepository(CourseAttendance).save(attendance);
+    res.json(attendance);
 });
 

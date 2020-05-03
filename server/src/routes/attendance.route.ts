@@ -5,7 +5,7 @@ import {CourseAttendance} from "../models/course-attendance.model";
 import {sendBadRequest, sendInternalServerError, sendNotFound} from "../services/utils.service";
 import * as macStorage from "../services/unique-user-address-storage.service";
 import {Student, User} from "../models/user.model";
-import {promises, createWriteStream} from 'fs';
+import {createWriteStream, promises} from 'fs';
 import * as archiver from 'archiver';
 import {join} from 'path';
 
@@ -138,5 +138,26 @@ attendanceRouter.post('/:id/attend', restrict({ teachersOnly: true }), async (re
     await getRepository(Student).save(student);
     await macStorage.setUserMACAddress(student.id!, attendance, mac);
 
+    res.send();
+});
+
+attendanceRouter.delete('/:id', restrict({ teachersOnly: true }), async (req: Request, res: Response) => {
+    const attendance = await getRepository(CourseAttendance).findOne(+req.params.id, { relations: ['students', 'course', 'course.teachers', 'course.students'] });
+
+    const teacher: User = res.locals.user;
+
+    if (!attendance) {
+        return sendNotFound(res);
+    }
+
+    if (!attendance.course.teachers.find(other => other.id === teacher.id)) {
+        return sendForbidden(res);
+    }
+
+    if (attendance.students!.length > 0) {
+        return sendBadRequest(res, 'Cannot delete this attendance because students are already assigned to it.');
+    }
+
+    await getRepository(CourseAttendance).remove(attendance);
     res.send();
 });
