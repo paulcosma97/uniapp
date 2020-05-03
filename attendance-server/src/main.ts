@@ -117,27 +117,29 @@ async function setAttendanceUrl(url: string, port: number): Promise<void> {
     await setAttendanceUrl(ip, port);
 
     expressApp.post('/api/attend', async (req, res) => {
+        console.log({ date: new Date().toISOString(), ip: req.ip });
+
        try {
-           console.log('here');
            const ip = req.ip.split(':').pop();
            const devices = await find();
-           console.log('here2', devices);
            const found = devices.find(device => ip.includes(device.ip));
 
            if (!found) {
               throw new Error('Device not found.');
           }
 
-           console.log('here3', devices);
            const student = await fetchProfile(req.headers['cookie'].split('=')[1]);
-           console.log('here4', devices);
-           await attendCourse(student.id, found?.mac || 'bla');
-           console.log('here5', devices);
+           await attendCourse(student.id, found!.mac);
+           console.log(`Student ${student.firstName} ${student.lastName} successfully attended course.`, {
+               date: new Date().toISOString(),
+               ip: req.ip,
+               mac: found.mac
+           });
 
            res.statusCode = 200;
            res.send();
        } catch (e) {
-           console.error(e);
+           console.log('Attendance failed for IP: ' + req.ip);
            res.statusCode = 400;
            res.json({
               message: 'Could not attend course.'

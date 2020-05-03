@@ -40,7 +40,7 @@ const TeacherCourseDetailsContentContainer: React.FC<TeacherCourseDetailsContent
         setModalVisible(true);
     };
 
-    const onStartAttendance = (attendance: CourseAttendance) => {
+    const onToggleAttendance = (attendance: CourseAttendance) => {
         dispatch(toggleCourseAttendance({ courseId: course.id, attendanceId: attendance.id, start: !attendance.open }));
     };
 
@@ -59,8 +59,9 @@ const TeacherCourseDetailsContentContainer: React.FC<TeacherCourseDetailsContent
             attended={attended}
             total={total}
             addTeacher={onOpenAddTeacherModal}
-            startAttendance={onStartAttendance}
+            startAttendance={onToggleAttendance}
             canAddTeacher={course.teachers.length < 3}
+            stopAttendance={onToggleAttendance}
         />
         <AddTeacherModal onAdd={onAddTeacher} onCancel={onCloseModal} visible={modalVisible}/>
     </>;

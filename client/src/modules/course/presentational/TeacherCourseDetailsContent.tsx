@@ -19,11 +19,13 @@ export interface TeacherCourseDetailsContentProps {
     total: number;
     addTeacher: TriggerCallback;
     startAttendance: TriggerCallback<CourseAttendance>;
+    stopAttendance: TriggerCallback<CourseAttendance>;
     canAddTeacher: boolean
 }
 
 const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = props => {
     const attendanceInProgress = props.attendances.find(att => att.open);
+    const attendanceCanBeStarted = props.attendances.find(att => att.available);
 
     return (
       <>
@@ -38,13 +40,13 @@ const TeacherCourseDetailsContent: React.FC<TeacherCourseDetailsContentProps> = 
               renderItem={attendance => (
                   <List.Item>
                       <span>{attendance.title}</span>
-                      {attendance.available && !attendanceInProgress ? (
+                      {attendanceCanBeStarted && attendanceCanBeStarted.id === attendance.id && !attendanceInProgress ? (
                           <Button onClick={() => props.startAttendance(attendance)}>Începe cursul</Button>
                       ) : (
                           <div>
                               <span>{attendance.attended} / {attendance.total} ( {Math.round(attendance.attended / attendance.total * 100)}% )</span>
                               {attendanceInProgress && attendance.id === attendanceInProgress.id && (
-                                  <Button style={{ marginLeft: '7px' }} onClick={() => props.startAttendance(attendance)}>Încheie cursul</Button>
+                                  <Button style={{ marginLeft: '7px' }} onClick={() => props.stopAttendance(attendance)}>Încheie cursul</Button>
                               )}
                           </div>
                       )}

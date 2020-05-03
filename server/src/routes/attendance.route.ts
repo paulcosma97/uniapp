@@ -23,10 +23,14 @@ attendanceRouter.post('/:id/toggle', restrict({ teachersOnly: true }), async (re
         return sendForbidden(res);
     }
 
+    if (!attendance.available) {
+        return sendBadRequest(res, 'Course attendance is not available.')
+    }
+
     attendance.open = !attendance.open;
-    attendance.available = !attendance.open;
 
     if (!attendance.open) {
+        attendance.available = false;
         delete attendance.url;
     }
 
