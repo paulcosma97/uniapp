@@ -1,0 +1,17 @@
+.homepage-title {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.75) !important;
+    margin-top: 15px
+}
+
+.homepage-logo {
+    max-width: 200px;
+    display: block;
+    margin: 10vh auto 0 auto;
+}
+
+@media(min-width: 1024px) {
+    .homepage-logo {
+        margin-top: 5vh;
+    }
+}

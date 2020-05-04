@@ -27,6 +27,7 @@ const LoginContainer: React.FC = () => {
         if (isLoggedIn) {
             history.push('/courses');
         }
+    // eslint-disable-next-line
     }, [isLoggedIn]);
 
     return <LoginForm

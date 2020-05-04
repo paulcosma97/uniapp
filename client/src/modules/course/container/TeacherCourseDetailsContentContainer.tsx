@@ -6,13 +6,12 @@ import AddTeacherModal from "../presentational/AddTeacherModal";
 import {useDispatch} from "react-redux";
 import {
     addTeacher,
-    createAttendance, deleteAttendance,
-    delistCourse, removeCourse,
+    createAttendance,
+    deleteAttendance,
     toggleCourseAttendance
 } from "../../../shared/course/state/course.actions";
 import {useTypedSelector} from "../../../shared/state/utils";
 import AddAttendanceModal from "../presentational/AddAttendanceModal";
-import {UserRole} from "../../../shared/user/model/user.model";
 import {TriggerCallback} from "../../../shared/utils";
 import {ExclamationCircleOutlined} from "@ant-design/icons/lib";
 

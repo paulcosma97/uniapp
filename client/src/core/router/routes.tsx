@@ -16,7 +16,6 @@ export const authenticatedRoutes: any[] = [
     ...publicRoutes,
     <Route key="home" path="/courses" exact component={React.lazy(() => import('../../modules/course/page/CourseListPage'))} />,
     <Route key="home" path="/courses/:id" exact component={React.lazy(() => import('../../modules/course/page/CourseDetailsPage'))} />,
-    <Route key="profile" path="/profile" exact component={() => <span>Profile Page</span>} />
 ];
 
 export const studentRoutes: any[] = [
