@@ -18,22 +18,18 @@ To achieve this, I used: Node.js with Express and Typescript for the backend, an
 ### Home
 
 ![Home](/previews/homepage.png)
-Format: ![Home](url)
 
 ### Course details from teacher's POV
 
 ![Teacher Course Details](/previews/teacher_course.png)
-Format: ![Teacher Course Details](url)
 
 ### Course details from student's POV
 
 ![Student Course Details](/previews/student_course.png)
-Format: ![Student Course Details](url)
 
 ### Course list from teacher's POV
 
 ![Student Course List](/previews/teacher_course_list.png)
-Format: ![Student Course List](url)
 
 ### More
 
